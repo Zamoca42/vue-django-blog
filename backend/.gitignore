@@ -1,0 +1,6 @@
+#folders
+media/
+
+#files
+secrets.json
+templates/blog/widget.html
