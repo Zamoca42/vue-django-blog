@@ -37,8 +37,9 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 INSTALLED_APPS = [
     # app
-    'blog.apps.BlogConfig',
+    'api.apps.ApiConfig',
     'accounts.apps.AccountsConfig',
+    'blog.apps.BlogConfig',
     # 3rd-party
     'taggit',
     # base
