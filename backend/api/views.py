@@ -10,10 +10,9 @@ from django.views.generic.edit import BaseCreateView, BaseUpdateView, BaseDelete
 from django.views.generic.list import BaseListView
 from taggit.models import Tag
 
-from django.http import JsonResponse
-# from django.db.models import Count
+from accounts.forms import MyUserCreationForm
+from accounts.views import MyLoginRequiredMixin, OwnerOnlyMixin
 from blog.models import Post
-from taggit.models import Tag
 from api.views_util import obj_to_post, prev_next_post, make_tag_cloud
 
 class ApiPostLV(BaseListView):
@@ -47,3 +46,63 @@ class ApiTagCloudLV(BaseListView):
         qs = context['object_list']
         tagList = make_tag_cloud(qs)
         return JsonResponse(data=tagList, safe=False, status=200)
+
+class ApiLoginView(LoginView):
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        userDict = {
+            'id': user.id,
+            'username': user.username,
+        }
+        return JsonResponse(data=userDict, safe=True, status=200)
+
+    def form_invalid(self, form):
+        return JsonResponse(data=form.errors, safe=True, status=400)
+
+
+class ApiRegisterView(BaseCreateView):
+    form_class = MyUserCreationForm
+
+    def form_valid(self, form):
+        self.object = form.save()
+        userDict = {
+            'id': self.object.id,
+            'username': self.object.username,
+        }
+        return JsonResponse(data=userDict, safe=True, status=201)
+
+    def form_invalid(self, form):
+        return JsonResponse(data=form.errors, safe=True, status=400)
+
+
+class ApiLogoutView(LogoutView):
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwargs):
+        logout(request)
+        return JsonResponse(data={}, safe=True, status=200)
+
+
+class ApiPwdchgView(PasswordChangeView):
+    def form_valid(self, form):
+        form.save()
+        update_session_auth_hash(self.request, form.user)
+        return JsonResponse(data={}, safe=True, status=200)
+
+    def form_invalid(self, form):
+        return JsonResponse(data=form.errors, safe=True, status=400)
+
+
+class ApiMeView(View):
+    def get(self, request, *args, **kwargs):
+        user = get_user(request)
+        if user.is_authenticated:
+            userDict = {
+                'id': user.id,
+                'username': user.username,
+            }
+        else:
+            userDict = {
+                'username': 'Anonymous',
+            }
+        return JsonResponse(data=userDict, safe=True, status=200)
