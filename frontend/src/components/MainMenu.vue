@@ -2,12 +2,16 @@
     <v-app-bar color="indigo" dark>
         <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Vue - Django Web Programming</v-toolbar-title>
+        <v-toolbar-title>Zamoca.space</v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-btn variant="text" href="/home.html">Home</v-btn>
         <v-btn variant="text" href="/blog/post_list.html">Blog</v-btn>
-        <v-btn variant="text" href="/admin/">Admin</v-btn>
+        <template v-if="user.username === 'Anonymous'">
+        </template>
+        <template v-else>
+            <v-btn variant="text" href="/admin/">Admin</v-btn>
+        </template>
 
         <v-spacer></v-spacer>
         <v-menu location="bottom">
@@ -76,8 +80,7 @@
                     </v-row>
 
                     <v-row justify="center">
-                        <v-btn color="bg-grey-lighten-1" variant="tonal" size="small" class="me-4"
-                            @click="reset('login')">
+                        <v-btn color="bg-grey-lighten-1" variant="tonal" size="small" class="me-4" @click="reset('login')">
                             Reset
                         </v-btn>
                         <v-btn color="primary" variant="tonal" size="small" @click="save('login')">
@@ -208,8 +211,7 @@
                     </v-row>
 
                     <v-row justify="center">
-                        <v-btn color="bg-grey-lighten-1" variant="tonal" size="small" class="me-4"
-                            @click="reset('pwdchg')">
+                        <v-btn color="bg-grey-lighten-1" variant="tonal" size="small" class="me-4" @click="reset('pwdchg')">
                             Reset
                         </v-btn>
                         <v-btn color="primary" variant="tonal" size="small" @click="save('pwdchg')">
