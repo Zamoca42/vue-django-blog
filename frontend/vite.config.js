@@ -38,7 +38,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '^/api': 'http://127.0.0.1:8000',
-      '^/admin': 'http://127.0.0.1:8000',
+      '^/sudo': 'http://127.0.0.1:8000',
       '^/static': 'http://127.0.0.1:8000',
     }      
   },
