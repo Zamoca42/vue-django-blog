@@ -6,8 +6,8 @@
         <v-toolbar-title>zamoca.space</v-toolbar-title>
 
         <span class="d-none d-sm-flex">
-            <v-btn variant="text" href="/home.html">INFO</v-btn>
-            <v-btn variant="text" href="/blog/post_list.html">Blog</v-btn>
+            <v-btn variant="text" v-for="(item, i) in items" :key="i" :value="item" :href="item.href" >{{ item.text }}</v-btn>
+            <!-- <v-btn variant="text" href="/blog/post_list">Blog</v-btn> -->
         </span>
 
         <v-spacer></v-spacer>
@@ -18,7 +18,7 @@
 
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app clipped>
+    <v-navigation-drawer class="d-flex d-sm-none" v-model="drawer" app clipped>
         <v-list density="compact">
             <v-list-subheader>menu</v-list-subheader>
 
@@ -48,7 +48,7 @@ export default {
     data: () => ({
         drawer: null,
         items: [
-            { text: 'Information', href: '/home.html' },
+            { text: 'Info', href: '/' },
             { text: 'Blog', href: '/blog/post_list.html' },
         ],
     }),
