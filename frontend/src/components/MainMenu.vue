@@ -1,27 +1,23 @@
 <template>
-  <v-app-bar
-    color="indigo-lighten-5"
-    density="compact"
-    class="justify-space-between"
-  >
+  <v-app-bar color="white" density="compact" class="justify-space-between">
     <div class="ma-1 pa-1 me-auto">zamoca.space</div>
 
     <v-app-bar-nav-icon
-      icon="mdi-vuetify"
+      :icon="drawer ? 'mdi-chevron-up' : 'mdi-chevron-down'"
       class="d-flex d-sm-none ma-2 pa-2 me-auto"
       @click="drawer = !drawer"
     >
     </v-app-bar-nav-icon>
     <div class="d-none d-sm-flex me-auto">
-    <v-btn
-      variant="text"
-      v-for="(item, i) in items"
-      :key="i"
-      :value="item"
-      :href="item.href"
-    >
-      {{ item.text }}
-    </v-btn>
+      <v-btn
+        variant="text"
+        v-for="(item, i) in items"
+        :key="i"
+        :value="item"
+        :href="item.href"
+      >
+        {{ item.text }}
+      </v-btn>
     </div>
     <!-- <v-btn variant="text" href="/blog/post_list">Blog</v-btn> -->
     <v-btn href="/"><v-icon>mdi-magnify</v-icon>Tag</v-btn>
@@ -29,7 +25,7 @@
 
   <v-navigation-drawer
     :elevation="1"
-    color="indigo-lighten-5"
+    color="white"
     class="d-flex d-sm-none"
     v-model="drawer"
     location="top"
@@ -69,7 +65,7 @@ export default {
   },
 
   data: () => ({
-    drawer: null,
+    drawer: false,
     items: [
       { text: "Info", href: "/" },
       { text: "Blog", href: "/blog/post_list.html" },
@@ -78,8 +74,8 @@ export default {
 
   computed: {
     railwidth() {
-        return 56 * this.items.length
-    }
+      return 50 * this.items.length;
+    },
   },
 
   created() {
