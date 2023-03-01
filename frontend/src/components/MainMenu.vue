@@ -24,12 +24,12 @@
   </v-app-bar>
 
   <v-navigation-drawer
-    :elevation="1"
+    elevation="1"
     color="white"
     class="d-flex d-sm-none"
     v-model="drawer"
     location="top"
-    rail="true"
+    :rail="drawer ? true : false"
     :rail-width="railwidth"
   >
     <v-list density="compact">

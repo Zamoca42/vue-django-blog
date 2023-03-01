@@ -16,13 +16,12 @@
       <v-col cols="12" class="text-subtitle-2">
         <span>category or tag</span>
       </v-col>
-      <v-col v-for="post in posts" :key="post.id" xs="12" sm="6" lg="3">
+      <v-col v-for="post in posts" :key="post.id" sm="6" lg="3">
         <v-card
           elevation="0"
-          density="compact"
           @click="serverPage(post.id)"
-          height="100%"
-          class="rounded-lg"
+          :ripple="false"
+          class="rounded-xl"
         >
           <v-img
             :src="post.image"
@@ -30,22 +29,17 @@
             style="height: 150px"
             cover
           ></v-img>
-          <div class="ml-1">
-            <p class="mt-2 text-caption text-disabled"> {{ post.modify_dt }} </p> 
-            <p class="text-h6 "> {{ post.title }} </p>
-            <p class="text-body-2 text-disabled mb-6">{{ post.description }} </p>
+            <v-card-subtitle class="mt-2 text-caption text-disabled"> {{ post.modify_dt }} </v-card-subtitle>
+            <v-card-title class="text-h6"> {{ post.title }} </v-card-title>
+            <v-card-text class="text-body-2 text-disabled mb-6">{{ post.description }} </v-card-text>
             <v-chip
             v-for="(tag, index) in post.tags"
             :key="index"
-            class="me-1 mb-3"
+            class="ml-2 mb-3 text-disabled"
             size="x-small"
           >
           {{ tag }}
           </v-chip>
-          </div>
-           
-          
-            
         </v-card>
       </v-col>
     </v-row>
