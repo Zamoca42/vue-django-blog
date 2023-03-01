@@ -1,6 +1,6 @@
 <template>
-  <v-container style="width:75%">
-    <v-row class="mb-6" style="height: 200px;" align="center" justify="center">
+  <v-container style="width: 75%">
+    <v-row class="mb-6" style="height: 200px" align="center" justify="center">
       <v-col cols="12" lg="12" align="center" class="mt-10 text-h3">
         <span>Post</span>
       </v-col>
@@ -12,35 +12,40 @@
         <v-btn variant="text">project</v-btn>
       </v-col>
     </v-row>
-    <v-row >
+    <v-row>
       <v-col cols="12" class="text-subtitle-2">
         <span>category or tag</span>
       </v-col>
-      <v-col
-        v-for="post in posts" :key="post.id"
-        xs="12"
-        sm="6"        
-        lg="3"
-      >
-        <v-card 
-        elevation="0" 
-        density="compact" 
-        @click="serverPage(post.id)" 
+      <v-col v-for="post in posts" :key="post.id" xs="12" sm="6" lg="3">
+        <v-card
+          elevation="0"
+          density="compact"
+          @click="serverPage(post.id)"
+          height="100%"
+          class="rounded-lg"
         >
           <v-img
             :src="post.image"
-            class="rounded-lg"
+            class="rounded-xl"
+            style="height: 150px"
+            cover
           ></v-img>
-          <v-card-subtitle class="mt-2"> {{ post.modify_dt }} </v-card-subtitle>
-          <div>
-            <v-card-title class="d-inline-flex"> {{ post.title }} </v-card-title>
+          <div class="ml-1">
+            <p class="mt-2 text-caption text-disabled"> {{ post.modify_dt }} </p> 
+            <p class="text-h6 "> {{ post.title }} </p>
+            <p class="text-body-2 text-disabled mb-6">{{ post.description }} </p>
+            <v-chip
+            v-for="(tag, index) in post.tags"
+            :key="index"
+            class="me-1 mb-3"
+            size="x-small"
+          >
+          {{ tag }}
+          </v-chip>
           </div>
-          <div>
-            <v-card-text class="d-inline-flex"> {{ post.description }} </v-card-text>
-          </div>
-          <div>
-            <v-chip v-for="(tag, index) in post.tags" :key="index" class="ma-1" size="x-small"> {{ tag }} </v-chip>
-          </div>
+           
+          
+            
         </v-card>
       </v-col>
     </v-row>
@@ -175,7 +180,6 @@ export default {
       console.log("serverPage()...", item);
       location.href = `/blog/post_detail.html?id=${item}`;
     },
-
   },
 };
 </script>
