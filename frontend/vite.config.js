@@ -38,8 +38,9 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '^/api': 'http://127.0.0.1:8000',
-      '^/sudo': 'http://127.0.0.1:8000',
+      '^/admin': 'http://127.0.0.1:8000',
       '^/static': 'http://127.0.0.1:8000',
+      '^/media': 'http://127.0.0.1:8000',
     }      
   },
 
@@ -54,7 +55,8 @@ export default defineConfig({
         main: resolve(__dirname, 'src', 'pages', 'index.html'),
         // home: resolve(__dirname, 'src', 'pages', 'home.html'),
         list: resolve(__dirname, 'src', 'pages', 'blog', 'post_list.html'),
-        detail: resolve(__dirname, 'src', 'pages', 'blog', 'post_detail.html')
+        detail: resolve(__dirname, 'src', 'pages', 'blog', 'post_detail.html'),
+        info: resolve(__dirname, 'src', 'pages', 'info.html')
       }
     }
   },
