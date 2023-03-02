@@ -1,6 +1,9 @@
 <template>
   <v-app-bar color="white" density="compact" class="justify-space-between">
-    <a class="ma-1 pa-1 me-auto text-decoration-none text-button text-high-emphasis" href="/">zamoca.space</a>
+    <p class="ma-1 pa-1 me-auto text-button d-flex">
+        <span>zamoca</span>
+        <span class="d-none d-sm-flex">.space</span>
+    </p>
 
     <v-app-bar-nav-icon
       :icon="drawer ? 'mdi-chevron-up' : 'mdi-chevron-down'"
@@ -19,8 +22,43 @@
         {{ item.text }}
       </v-btn>
     </div>
-    <!-- <v-btn variant="text" href="/blog/post_list">Blog</v-btn> -->
-    <v-btn href="/"><v-icon>mdi-magnify</v-icon>Tag</v-btn>
+    <v-dialog v-model="dialog" scrollable width="450px">
+      <template v-slot:activator="{ props }">
+        <v-btn v-bind="props"> <v-icon>mdi-magnify</v-icon>Tag </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>Select Tag</v-card-title>
+        <v-container>
+          <v-row>
+            <v-col cols="auto">
+              <v-chip
+                v-for="(tag, index) in tagCloud"
+                :key="index"
+                @click="serverPage(tag.name)"
+                class="ma-2"
+                :color="tag.chipColor"
+                ttext-color="white"
+              >
+                <v-avatar
+                  :color="tag.avatarColor"
+                  size="x-small"
+                  class="me-2"
+                  >{{ tag.count }}</v-avatar
+                >
+                {{ tag.name }}
+              </v-chip>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-card-text style="height: 300px"> </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app-bar>
 
   <v-navigation-drawer
@@ -66,9 +104,11 @@ export default {
 
   data: () => ({
     drawer: false,
+    dialog: false,
+    tagCloud: [],
     items: [
       { text: "Info", href: "/info.html" },
-      { text: "Blog", href: "/blog/post_list.html" },
+      { text: "Blog", href: "/" },
     ],
   }),
 
@@ -80,13 +120,45 @@ export default {
 
   created() {
     // console.log("created(MainMenu.vue)...");
-    // this.user.getUserInfo();
+    this.fetchTagCloud();
   },
 
   mounted() {
     // console.log("mounted()...");
   },
 
-  methods: {},
+  methods: {
+    fetchTagCloud() {
+      console.log("fetchTagCloud()...");
+      axios
+        .get("/api/tag/cloud/")
+        .then((res) => {
+          console.log("TAG CLOUD GET RES", res);
+          this.tagCloud = res.data;
+          // tag.weight
+          this.tagCloud.forEach((element) => {
+            if (element.weight === 3) {
+              element.chipColor = "green-accent-4";
+              element.avatarColor = "green-lighten-1";
+            } else if (element.weight === 2) {
+              element.chipColor = "cyan-accent-4";
+              element.avatarColor = "blue-lighten-4";
+            } else if (element.weight === 1) {
+              element.chipColor = "grey-darken-1";
+              element.avatarColor = "grey-lighten-1";
+            }
+          });
+        })
+        .catch((err) => {
+          console.log("TAG CLOUD GET ERR.RESPONSE", err.response);
+          alert(err.response.status + " " + err.response.statusText);
+        });
+    },
+
+    serverPage(tagname) {
+      console.log("serverPage()...", tagname);
+      location.href = `/blog/post_list.html?tagname=${tagname}`;
+    },
+  },
 };
 </script>
