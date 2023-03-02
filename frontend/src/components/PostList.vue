@@ -1,7 +1,7 @@
 <template>
-  <v-container style="width: 75%">
+  <v-container style="width:75%;">
     <v-row class="mb-6" style="height: 200px" align="center" justify="center">
-      <v-col cols="12" lg="12" align="center" class="mt-10 text-h3">
+      <v-col cols="12" lg="10" align="center" class="mt-10 text-h3">
         <span>Post</span>
       </v-col>
       <!-- category -->
@@ -14,7 +14,7 @@
     </v-row>
     <!-- category or tag -->
     <h5><div class="mb-2 text-subtitle-2">category or tag</div></h5>
-    <v-row>
+    <v-row cols="12" lg="10">
       <v-col
         v-for="post in posts"
         :key="post.id"

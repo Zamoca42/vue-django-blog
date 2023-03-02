@@ -1,6 +1,6 @@
 <template>
   <v-app-bar color="white" density="compact" class="justify-space-between">
-    <div class="ma-1 pa-1 me-auto">zamoca.space</div>
+    <a class="ma-1 pa-1 me-auto text-decoration-none text-button text-high-emphasis" href="/">zamoca.space</a>
 
     <v-app-bar-nav-icon
       :icon="drawer ? 'mdi-chevron-up' : 'mdi-chevron-down'"
@@ -67,7 +67,7 @@ export default {
   data: () => ({
     drawer: false,
     items: [
-      { text: "Info", href: "/" },
+      { text: "Info", href: "/info.html" },
       { text: "Blog", href: "/blog/post_list.html" },
     ],
   }),
