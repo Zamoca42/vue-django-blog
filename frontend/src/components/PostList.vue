@@ -1,5 +1,5 @@
 <template>
-  <v-container style="width:75%;">
+  <v-container style="width: 75%">
     <v-row class="mb-6" style="height: 200px" align="center" justify="center">
       <v-col cols="12" lg="10" align="center" class="mt-10 text-h3">
         <span>Post</span>
@@ -13,7 +13,25 @@
       </v-col>
     </v-row>
     <!-- category or tag -->
-    <h5><div class="mb-2 text-subtitle-2">category or tag</div></h5>
+    <template v-if="tagname">
+      <p class="mb-2 text-subtitle-2">
+        <span>Tag: </span>
+        <span>
+          {{ tagname }}
+        </span>
+      </p>
+    </template>
+    <!-- <template v-if="category">
+      <p class="mb-2 text-subtitle-2">
+        <span>Category: </span>
+        <span>
+          Category
+        </span>
+      </p>
+    </template> -->
+    <template v-else>
+      <div class="mb-2"></div>
+    </template>
     <v-row cols="12" lg="10">
       <v-col
         v-for="post in posts"
@@ -40,7 +58,10 @@
               <v-col sm="10" cols="12" class="text-sm-left text-center">
                 <p class="text-caption text-disabled">{{ post.modify_dt }}</p>
                 <p class="text-body-1 mywrap" v-html="post.title"></p>
-                <div class="mt-3 text-body-2 text-disabled mb-3 mywrap" v-html="post.description"></div>
+                <div
+                  class="mt-3 text-body-2 text-disabled mb-3 mywrap"
+                  v-html="post.description"
+                ></div>
               </v-col>
             </v-row>
           </v-card-text>
@@ -117,24 +138,9 @@ export default {
       console.log("async.2 in fetchPostList()...", this.user);
     },
 
-    // fetchCateTagList() {
-    //     console.log("fetchCateTagList()...");
-
-    //     axios
-    //       .get(`/api/catetag`)
-    //       .then((res) => {
-    //         console.log("FETCH CATE-TAG-LIST GET RES", res);
-    //         this.cateList = res.data.cateList;
-    //         // this.tagList = res.data.tagList;
-    //       })
-    //       .catch((err) => {
-    //         console.log("FETCH CATE-TAG-LIST GET ERR.RESPONSE", err.response);
-    //         alert(`${err.response.status} ${err.response.statusText}`);
-    //       });
-    //   },
     serverPage(item) {
-      console.log("serverPage()...", item);
-      location.href = `/blog/post_detail.html?id=${item}`;
+        console.log("serverPage()...", item);
+        location.href = `/blog/post_detail.html?id=${item}`;
     },
   },
 };
@@ -142,6 +148,6 @@ export default {
 
 <style scoped>
 .mywrap {
-  word-break:keep-all;
+  word-break: keep-all;
 }
 </style>
