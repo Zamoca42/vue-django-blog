@@ -12,16 +12,22 @@
         <v-btn variant="text">project</v-btn>
       </v-col>
     </v-row>
+    <!-- category or tag -->
+    <h5><div class="mb-2 text-subtitle-2">category or tag</div></h5>
     <v-row>
-      <v-col cols="12" class="text-subtitle-2">
-        <span>category or tag</span>
-      </v-col>
-      <v-col v-for="post in posts" :key="post.id" sm="6" lg="3">
+      <v-col
+        v-for="post in posts"
+        :key="post.id"
+        lg="3"
+        md="4"
+        sm="6"
+        cols="12"
+      >
         <v-card
           elevation="0"
           @click="serverPage(post.id)"
           :ripple="false"
-          class="rounded-xl"
+          class="rounded-xl fill-height"
         >
           <v-img
             :src="post.image"
@@ -29,66 +35,58 @@
             style="height: 150px"
             cover
           ></v-img>
-            <v-card-subtitle class="mt-2 text-caption text-disabled"> {{ post.modify_dt }} </v-card-subtitle>
-            <v-card-title class="text-h6"> {{ post.title }} </v-card-title>
-            <v-card-text class="text-body-2 text-disabled mb-6">{{ post.description }} </v-card-text>
-            <v-chip
+          <v-card-text>
+            <v-row>
+              <v-col sm="10" cols="12" class="text-sm-left text-center">
+                <p class="text-caption text-disabled">{{ post.modify_dt }}</p>
+                <p class="text-body-1 mywrap" v-html="post.title"></p>
+                <div class="mt-3 text-body-2 text-disabled mb-3 mywrap" v-html="post.description"></div>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-chip
             v-for="(tag, index) in post.tags"
             :key="index"
             class="ml-2 mb-3 text-disabled"
             size="x-small"
           >
-          {{ tag }}
+            {{ tag }}
           </v-chip>
         </v-card>
       </v-col>
+    </v-row>
+    <v-row align="center" justify="center">
+      <div class="text-center">
+        <v-pagination
+          v-model="page"
+          :length="4"
+          rounded="circle"
+        ></v-pagination>
+      </div>
     </v-row>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
-import { user } from "./globals.js";
+// import { user } from "./globals.js";
 
 export default {
   setup() {
-    return { user };
+    // return { user };
   },
 
   data: () => ({
-    dialog: false,
-    headers: [
-      {
-        title: "ID",
-        align: "start",
-        sortable: false,
-        key: "id",
-      },
-      { title: "제 목", key: "title" },
-      { title: "요 약", key: "description" },
-      { title: "수정일", key: "modify_dt" },
-      { title: "작성자", key: "owner" },
-      { title: "Actions", key: "actions", sortable: false },
-    ],
     posts: [],
     cateList: [],
     tagname: "",
-    editedIndex: -1,
-    editedItem: {},
-    actionKind: "",
-
-    dialogDelete: false,
+    page: 1,
   }),
 
-  computed: {
-    formTitle() {
-      if (this.actionKind === "create") return "Create post";
-      else return "Update post";
-    },
-  },
+  computed: {},
 
   created() {
-    console.log("created(PostList.vue)...", this.user);
+    // console.log("created(PostList.vue)...", this.user);
     const params = new URL(location).searchParams;
     this.tagname = params.get("tagname");
     this.fetchPostList();
@@ -96,7 +94,7 @@ export default {
   },
 
   mounted() {
-    console.log("mounted(PostList.vue)...", this.user);
+    // console.log("mounted(PostList.vue)...", this.user);
   },
 
   methods: {
@@ -134,42 +132,6 @@ export default {
     //         alert(`${err.response.status} ${err.response.statusText}`);
     //       });
     //   },
-
-    dialogOpen(actionKind, item) {
-      console.log("dialogOpen()...", actionKind, item);
-      if (this.user.username === "Anonymous") {
-        alert("Please login first !");
-        return;
-      }
-
-      this.actionKind = actionKind;
-      if (actionKind === "create") {
-        this.editedIndex = -1;
-        this.editedItem = {};
-      } else {
-        this.editedIndex = this.posts.indexOf(item);
-        this.editedItem = item;
-      }
-      this.dialog = true;
-    },
-
-    cancel() {
-      console.log("cancel()...");
-      this.dialog = false;
-    },
-
-    save() {
-      console.log("save()...");
-      if (this.actionKind === "create") this.createPost();
-      else this.updatePost();
-      this.dialog = false;
-    },
-
-    reset() {
-      console.log("reset()...");
-      document.getElementById("post-form").reset();
-    },
-
     serverPage(item) {
       console.log("serverPage()...", item);
       location.href = `/blog/post_detail.html?id=${item}`;
@@ -179,8 +141,7 @@ export default {
 </script>
 
 <style scoped>
-.v-data-table :deep(tr.v-data-table__tr) :hover {
-  cursor: pointer;
-  background-color: #eee;
+.mywrap {
+  word-break:keep-all;
 }
 </style>
