@@ -32,14 +32,13 @@ def get_secret(setting, secrets=secrets):
 
 SECRET_KEY = get_secret("SECRET_KEY")
 
-
 # Application definition
 
 INSTALLED_APPS = [
     # app
     'api.apps.ApiConfig',
     'accounts.apps.AccountsConfig',
-    'blog.apps.BlogConfig',
+    # 'blog.apps.BlogConfig',
     # 3rd-party
     'taggit',
     # base
