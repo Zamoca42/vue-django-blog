@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
+# from markdownx.models import MarkdownxField
+from martor.models import MartorField
 
 class Post(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
@@ -9,7 +11,8 @@ class Post(models.Model):
     title = models.CharField(verbose_name='TITLE', max_length=50)
     description = models.CharField('DESCRIPTION', max_length=100, blank=True, help_text='simple description text.')
     image = models.ImageField('IMAGE', upload_to='blog/%Y/%m/', blank=True, null=True)
-    content = models.TextField('CONTENT')
+    # content = MarkdownxField('CONTENT')
+    content = MartorField('CONTENT')
     create_dt = models.DateTimeField('CREATE DATE', auto_now_add=True)
     modify_dt = models.DateTimeField('MODIFY DATE', auto_now=True)
     tags = TaggableManager(blank=True)
