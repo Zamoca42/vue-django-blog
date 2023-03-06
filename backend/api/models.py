@@ -3,7 +3,19 @@ from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
 # from markdownx.models import MarkdownxField
-from martor.models import MartorField
+# from martor.models import MartorField
+from tinymce import models as tinymce_models
+from pathlib import Path
+from datetime import datetime
+from ckeditor_uploader.fields import RichTextUploadingField
+
+def get_upload_path(instance, filename):
+    # get current date
+    now = datetime.now()
+    # create folder path based on date using pathlib
+    folder_path = Path(str(now.year), str(now.month), str(now.day))
+    # return the upload path
+    return folder_path / filename
 
 class Post(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
@@ -11,8 +23,7 @@ class Post(models.Model):
     title = models.CharField(verbose_name='TITLE', max_length=50)
     description = models.CharField('DESCRIPTION', max_length=100, blank=True, help_text='simple description text.')
     image = models.ImageField('IMAGE', upload_to='blog/%Y/%m/', blank=True, null=True)
-    # content = MarkdownxField('CONTENT')
-    content = MartorField('CONTENT')
+    content = RichTextUploadingField()
     create_dt = models.DateTimeField('CREATE DATE', auto_now_add=True)
     modify_dt = models.DateTimeField('MODIFY DATE', auto_now=True)
     tags = TaggableManager(blank=True)

@@ -7,3 +7,4 @@ pillow
 
 requests
 bleach
+django-ckeditor

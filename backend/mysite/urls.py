@@ -14,23 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path, include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+from filebrowser.sites import site
 # from markdownx.views import ImageUploadView,MarkdownifyView
-from api.views_util import markdown_uploader
+# from api.views_util import markdown_uploader
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     # path('apiv2/', include('apiv2.urls')),
-    # path('blog/', include('blog.urls')),
-
-    # re_path('upload/', ImageUploadView.as_view(), name='markdownx_upload'),
-    # re_path('markdownify/', MarkdownifyView.as_view(), name='markdownx_markdownify'),
-    path('martor/', include('martor.urls')),
-    re_path(r'^martor/uploader/$', markdown_uploader, name='markdown_uploader_page'),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
