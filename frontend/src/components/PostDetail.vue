@@ -38,18 +38,18 @@
     <v-row align="center" justify="center">
       <v-col cols="6" sm="5" lg="5">
         <v-card elevation="1" class="pa-2 mb-5" height="65px"
-        v-if="post.prev" @click="fetchPostDetail(post.prev.id)" 
+        v-if="prev" @click="fetchPostDetail(prev.id)" 
         tile hover>
           <p class="text-disabled"> &lt; prev </p>
-          <p class="myword" v-html="post.prev.title"></p>
+          <p class="myword" v-html="prev.title"></p>
         </v-card>
       </v-col>
       <v-col cols="6" sm="5" lg="5" class="text-right">
         <v-card elevation="1" class="pa-2 mb-5" height="65px"
-        v-if="post.next" @click="fetchPostDetail(post.next.id)"
+        v-if="next" @click="fetchPostDetail(next.id)"
         tile hover>
         <p class="text-disabled"> next &gt; </p>
-        <p class="myword" v-html="post.next.title"></p>
+        <p class="myword" v-html="next.title"></p>
         </v-card>
       </v-col>
     </v-row>
@@ -62,6 +62,8 @@ import axios from "axios";
 export default {
   data: () => ({
     post: {},
+    prev: {},
+    next: {},
   }),
 
   created() {
@@ -75,10 +77,12 @@ export default {
     fetchPostDetail(postId) {
       console.log("fetchPostDetail()...", postId);
       axios
-        .get(`/api/post/${postId}/`)
+        .get(`/api2/post/${postId}/`)
         .then((res) => {
           console.log("POST DETAIL GET RES", res);
-          this.post = res.data;
+          this.post = res.data.post;
+          this.prev = res.data.prevPost;
+          this.next = res.data.nextPost;
         })
         .catch((err) => {
           console.log("POST DETAIL GET ERR.RESPONSE", err.response);
