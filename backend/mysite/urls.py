@@ -25,7 +25,7 @@ from filebrowser.sites import site
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    # path('apiv2/', include('apiv2.urls')),
+    path('api2/', include('apiv2.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
