@@ -16,9 +16,8 @@ from django.views.generic.list import BaseListView
 from django.db.models import Count
 from .utils import make_tag_cloud, get_prev_next
 
-
 class PostPageNumberPagination(PageNumberPagination):
-    page_size = 12
+    page_size = 2
     # page_size_query_param = 'page_size'
     # max_page_size = 1000
     def get_paginated_response(self, data):
@@ -32,6 +31,17 @@ class PostListAPIView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
     pagination_class = PostPageNumberPagination
+
+    def get_queryset(self):
+        tagname = self.request.GET.get('tagname')
+        category = self.request.GET.get('category')
+        if tagname:
+            qs = Post.objects.filter(tags__name=tagname)
+        elif category:
+            qs = Post.objects.filter(category__name=category)
+        else:
+            qs = Post.objects.all()
+        return qs
 
     def get_serializer_context(self):
       """
