@@ -2,11 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
-# from markdownx.models import MarkdownxField
-# from martor.models import MartorField
-from tinymce import models as tinymce_models
 from pathlib import Path
-from datetime import datetime
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
