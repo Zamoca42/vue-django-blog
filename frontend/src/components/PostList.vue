@@ -34,7 +34,7 @@
     </template>
     <v-row cols="12" lg="10">
       <v-col
-        v-for="post in posts"
+        v-for="post in postList"
         :key="post.id"
         lg="3"
         md="4"
@@ -98,10 +98,12 @@ export default {
   },
 
   data: () => ({
-    posts: [],
+    postList: [],
     cateList: [],
     tagname: "",
-    page: 1,
+    category: "",
+    pageCnt: 1,
+    curPage: 1,
   }),
 
   computed: {},
@@ -110,6 +112,7 @@ export default {
     // console.log("created(PostList.vue)...", this.user);
     const params = new URL(location).searchParams;
     this.tagname = params.get("tagname");
+    this.category = params.get("category");
     this.fetchPostList();
     console.log("async.1 in created()...");
   },
@@ -123,18 +126,34 @@ export default {
       console.log("fetchPostList()...", this.tagname);
 
       let getUrl = "";
-      if (this.tagname) getUrl = `/api/post/list/?tagname=${this.tagname}`;
-      else getUrl = "/api/post/list/";
+      if (this.tagname)
+        getUrl = `/api2/post/?tagname=${this.tagname}`;
+      else if (this.category)
+        getUrl = `/api2/post/?category=${this.category}`;
+      else getUrl = `/api2/post/`;
 
-      try {
-        const res = await axios.get(getUrl);
-        console.log("POST LIST GET RES", res);
-        this.posts = res.data;
-      } catch (err) {
-        console.log("POST LIST GET ERR.RESPONSE", err);
+      axios
+      .get(getUrl)
+      .then((res) => {
+        console.log("FETCH POSTLIST GET RES", res);
+        this.postList = res.data.postList;
+        this.pageCnt = res.data.pageCnt;
+        this.curPage = res.data.curPage;
+      })
+      .catch((err) => {
+        console.log("POST LIST GET ERR.RESPONSE", err.response);
         alert(err.response.status + " " + err.response.statusText);
-      }
-
+      });
+      // try {
+      //   const res = await axios.get(getUrl);
+      //   console.log("POST LIST GET RES", res);
+      //   this.posts = res.data.postList;
+      //   this.pageCnt = res.data.pageCnt;
+      //   this.curPage = res.data.curPage;
+      // } catch (err) {
+      //   console.log("POST LIST GET ERR.RESPONSE", err);
+      //   alert(err.response.status + " " + err.response.statusText);
+      // }
       console.log("async.2 in fetchPostList()...", this.user);
     },
 
