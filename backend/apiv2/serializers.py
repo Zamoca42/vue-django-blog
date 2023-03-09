@@ -23,7 +23,8 @@ class PostRetrieveSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.name', default='New')
     tags = serializers.StringRelatedField(many=True)
     modify_dt = serializers.DateTimeField(format='%B %d, %Y')
-    
+    owner = serializers.StringRelatedField()
+
     class Meta:
         model = Post
         # fields = '__all__'
