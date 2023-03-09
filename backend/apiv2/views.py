@@ -1,23 +1,21 @@
-from apiv2.serializers import PostListSerializer, PostRetrieveSerializer, CateTagSerializer, PostSerializerDetail 
-from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
+from apiv2.serializers import (
+    PostListSerializer, 
+    PostRetrieveSerializer, 
+    PostSerializerDetail, 
+    TagSerializer,
+    CateSerializer,
+    )
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
 from api.models import Post, Category
 from taggit.models import Tag
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from collections import OrderedDict
+from django.views.generic.list import BaseListView
+from django.db.models import Count
+from .utils import make_tag_cloud, get_prev_next
 
-class CateTagAPIView(APIView):
-    def get(self, request, *args, **kwargs):
-        cateList = Category.objects.all()
-        tagList = Tag.objects.all()
-        data = {
-            'cateList': cateList,
-            'tagList': tagList,
-        }
-
-        serializer = CateTagSerializer(instance=data)
-        return Response(serializer.data)
 
 class PostPageNumberPagination(PageNumberPagination):
     page_size = 12
@@ -45,18 +43,6 @@ class PostListAPIView(ListAPIView):
           'view': self
       }
 
-def get_prev_next(instance):
-    try:
-        prev = instance.get_previous_by_modify_dt()
-    except instance.DoesNotExist:
-        prev = None
-    
-    try:
-        next_ = instance.get_next_by_modify_dt()
-    except instance.DoesNotExist:
-        next_ = None
-    
-    return prev, next_
 
 class PostRetrieveAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
@@ -82,3 +68,37 @@ class PostRetrieveAPIView(RetrieveAPIView):
           'format': self.format_kwarg,
           'view': self
       }
+
+# class CateTagAPIView(APIView):
+#     def get(self, request, *args, **kwargs):
+#         # cateList = Category.objects.all()
+#         qs = Tag.objects.annotate(count=Count('post'))
+#         tagList = make_tag_cloud(qs)
+#         data = {
+#             # 'cateList': cateList,
+#             'tagList': tagList,
+#         }
+
+#         serializer = CateTagSerializer(instance=data)
+#         return Response(serializer.data)
+
+class TagCloudAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        qs = Tag.objects.annotate(count=Count('post'))
+        tagList = make_tag_cloud(qs)
+        data = {
+            'tagList': tagList,
+        }
+
+        serializer = TagSerializer(instance=data)
+        return Response(serializer.data)
+
+class CateListAPIView(APIView):
+     def get(self, request, *args, **kwargs):
+        cateList = Category.objects.all()
+        data = {
+            'cateList': cateList,
+        }
+
+        serializer = CateSerializer(instance=data)
+        return Response(serializer.data)

@@ -7,6 +7,8 @@ urlpatterns = [
     path('post/', views.PostListAPIView.as_view(), name='post-list'),
     path('post/<int:pk>/', views.PostRetrieveAPIView.as_view(), name='post-detail'),
 
-    # path('category/', views.CateTagAPIView.as_view(), name='catetag'),
-    # path('tag/cloud/', views.ApiTagCloudLV.as_view(), name='tag_cloud'),
+    path('category/', views.CateListAPIView.as_view(), name='category'),
+    path('tag/cloud/', views.TagCloudAPIView.as_view(), name='tag_cloud'),
+
+
 ]
