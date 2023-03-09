@@ -22,12 +22,13 @@
         {{ item.text }}
       </v-btn>
     </div>
-    <v-dialog v-model="dialog" scrollable width="450px">
+    <v-dialog v-model="dialog" scrollable width="460px">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props"> <v-icon>mdi-magnify</v-icon>Tag </v-btn>
       </template>
       <v-card>
         <v-card-title>Select Tag</v-card-title>
+        <v-divider></v-divider>
         <v-container>
           <v-row>
             <v-col cols="auto">
@@ -131,10 +132,10 @@ export default {
     fetchTagCloud() {
       console.log("fetchTagCloud()...");
       axios
-        .get("/api/tag/cloud/")
+        .get("/api2/tag/cloud/")
         .then((res) => {
           console.log("TAG CLOUD GET RES", res);
-          this.tagCloud = res.data;
+          this.tagCloud = res.data.tagList;
           // tag.weight
           this.tagCloud.forEach((element) => {
             if (element.weight === 3) {
@@ -157,7 +158,7 @@ export default {
 
     serverPage(tagname) {
       console.log("serverPage()...", tagname);
-      location.href = `/blog/post_list.html?tagname=${tagname}`;
+      location.href = `/?tagname=${tagname}`;
     },
   },
 };
