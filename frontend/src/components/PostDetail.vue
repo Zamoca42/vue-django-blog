@@ -41,7 +41,7 @@
         v-if="prev" @click="fetchPostDetail(prev.id)" 
         tile hover>
           <p class="text-disabled"> &lt; prev </p>
-          <p class="myword" v-html="prev.title"></p>
+          <p class="myword ml-2" v-html="prev.title"></p>
         </v-card>
       </v-col>
       <v-col cols="6" sm="5" lg="5" class="text-right">
@@ -49,7 +49,7 @@
         v-if="next" @click="fetchPostDetail(next.id)"
         tile hover>
         <p class="text-disabled"> next &gt; </p>
-        <p class="myword" v-html="next.title"></p>
+        <p class="myword me-2" v-html="next.title"></p>
         </v-card>
       </v-col>
     </v-row>
