@@ -24,7 +24,7 @@
     </div>
     <v-dialog v-model="dialog" scrollable width="460px">
       <template v-slot:activator="{ props }">
-        <v-btn v-bind="props"> <v-icon>mdi-magnify</v-icon>Tag </v-btn>
+        <v-btn v-bind="props" @click="fetchTagCloud()"> <v-icon>mdi-magnify</v-icon>Tag </v-btn>
       </template>
       <v-card>
         <v-card-title>Select Tag</v-card-title>
@@ -121,7 +121,7 @@ export default {
 
   created() {
     // console.log("created(MainMenu.vue)...");
-    this.fetchTagCloud();
+    // this.fetchTagCloud();
   },
 
   mounted() {
