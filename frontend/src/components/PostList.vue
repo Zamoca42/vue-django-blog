@@ -10,9 +10,9 @@
           variant="text"
           v-for="(cate, index) in cateList"
           :key="index"
-          @click="categoryPage(cate)"
+          @click="categoryPage(cate.text)"
         >
-          {{ cate }}
+          {{ cate.text }}
         </v-btn>
       </v-col>
     </v-row>
@@ -121,20 +121,21 @@ export default {
 
   data: () => ({
     postList: [],
-    cateList: [],
+    cateList: [
+      { text: "New" },
+      { text: "Log" },
+      { text: "Project" },
+      { text: "Review" },
+    ],
     tagname: "",
     category: "",
     page:1,
     pageCnt: 1,
     curPage: 1,
-    // image: "",
     defaultImageUrl: "https://picsum.photos/id/366/400/200",
   }),
 
-  computed: {
-    // imageSrc() {
-    //   return this.image || this.defaultImageUrl;
-  },
+  computed: {},
 
   created() {
     // console.log("created(PostList.vue)...", this.user);
@@ -147,7 +148,7 @@ export default {
 
   mounted() {
     // console.log("mounted(PostList.vue)...", this.user);
-    this.fetchCateList();
+    // this.fetchCateList();
   },
 
   methods: {
@@ -179,19 +180,19 @@ export default {
       location.href = `/blog/post_detail.html?id=${item}`;
     },
 
-    async fetchCateList() {
-      console.log("fetchCateList()...");
-      axios
-        .get("/api2/category/")
-        .then((res) => {
-          console.log("CATEGORY GET RES", res);
-          this.cateList = res.data.cateList;
-        })
-        .catch((err) => {
-          console.log("CATEGORY GET ERR.RESPONSE", err.response);
-          alert(err.response.status + " " + err.response.statusText);
-        });
-    },
+    // async fetchCateList() {
+    //   console.log("fetchCateList()...");
+    //   axios
+    //     .get("/api2/category/")
+    //     .then((res) => {
+    //       console.log("CATEGORY GET RES", res);
+    //       this.cateList = res.data.cateList;
+    //     })
+    //     .catch((err) => {
+    //       console.log("CATEGORY GET ERR.RESPONSE", err.response);
+    //       alert(err.response.status + " " + err.response.statusText);
+    //     });
+    // },
 
     categoryPage(category) {
       console.log("serverPage()...", category);
