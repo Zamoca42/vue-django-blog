@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from api.models import Post, Category
 from taggit.models import Tag
-from taggit.serializers import TagListSerializerField
 
 # Serializers define the API representation.
 
@@ -49,7 +48,3 @@ class PostSerializerDetail(serializers.Serializer):
 class TagSerializer(serializers.Serializer):
     # cateList = serializers.ListField(child=serializers.CharField())
     tagList = serializers.ListField(child=serializers.DictField())
-
-class CateSerializer(serializers.Serializer):
-    cateList = serializers.ListField(child=serializers.CharField())
-    # tagList = serializers.ListField(child=serializers.DictField())

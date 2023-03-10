@@ -3,7 +3,6 @@ from apiv2.serializers import (
     PostRetrieveSerializer, 
     PostSerializerDetail, 
     TagSerializer,
-    CateSerializer,
     )
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
@@ -101,14 +100,4 @@ class TagCloudAPIView(APIView):
         }
 
         serializer = TagSerializer(instance=data)
-        return Response(serializer.data)
-
-class CateListAPIView(APIView):
-     def get(self, request, *args, **kwargs):
-        cateList = Category.objects.all()
-        data = {
-            'cateList': cateList,
-        }
-
-        serializer = CateSerializer(instance=data)
         return Response(serializer.data)
