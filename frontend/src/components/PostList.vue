@@ -1,15 +1,19 @@
 <template>
   <v-container fluid style="width: 1200px">
     <v-row class="mb-6" style="height: 200px" align="center" justify="center">
-      <v-col cols="12" lg="10" align="center" class="mt-10 text-h3">
-        <span>Post</span>
+      <v-col cols="12" lg="10" align="center" class="mt-10">
+        <a class="text-h3 text-high-emphasis text-decoration-none" href="/">Post</a>
       </v-col>
       <!-- category -->
       <v-col cols="12" lg="12" align="center">
-        <v-btn variant="text">new</v-btn>
-        <v-btn variant="text">Review</v-btn>
-        <v-btn variant="text">log</v-btn>
-        <v-btn variant="text">project</v-btn>
+        <v-btn
+          variant="text"
+          v-for="(cate, index) in cateList"
+          :key="index"
+          @click="categoryPage(cate)"
+        >
+          {{ cate }}
+        </v-btn>
       </v-col>
     </v-row>
     <!-- category or tag -->
@@ -21,17 +25,18 @@
         </span>
       </p>
     </template>
-    <!-- <template v-if="category">
+    <template v-if="category">
       <p class="mb-2 text-subtitle-2">
         <span>Category: </span>
         <span>
-          Category
+          {{ category }}
         </span>
       </p>
-    </template> -->
+    </template>
     <template v-else>
       <div class="mb-2"></div>
     </template>
+    <!-- PostList -->
     <v-row cols="12" lg="10">
       <v-col
         v-for="post in postList"
@@ -88,6 +93,7 @@
     </v-row>
     <v-row align="center" justify="center">
       <div class="text-center">
+        <!-- Pagination -->
         <v-pagination
           v-model="page"
           :length="4"
@@ -116,7 +122,7 @@ export default {
     pageCnt: 1,
     curPage: 1,
     // image: "",
-    defaultImageUrl: "https://picsum.photos/500/150?grayscale",
+    defaultImageUrl: "https://picsum.photos/400/200",
   }),
 
   computed: {
@@ -130,6 +136,7 @@ export default {
     this.tagname = params.get("tagname");
     this.category = params.get("category");
     this.fetchPostList();
+    this.fetchCateList();
     console.log("async.1 in created()...");
   },
 
@@ -139,7 +146,7 @@ export default {
 
   methods: {
     async fetchPostList() {
-      console.log("fetchPostList()...", this.tagname);
+      console.log("fetchPostList()...", this.tagname, this.category);
 
       let getUrl = "";
       if (this.tagname) getUrl = `/api2/post/?tagname=${this.tagname}`;
@@ -158,22 +165,31 @@ export default {
           console.log("POST LIST GET ERR.RESPONSE", err.response);
           alert(err.response.status + " " + err.response.statusText);
         });
-      // try {
-      //   const res = await axios.get(getUrl);
-      //   console.log("POST LIST GET RES", res);
-      //   this.posts = res.data.postList;
-      //   this.pageCnt = res.data.pageCnt;
-      //   this.curPage = res.data.curPage;
-      // } catch (err) {
-      //   console.log("POST LIST GET ERR.RESPONSE", err);
-      //   alert(err.response.status + " " + err.response.statusText);
-      // }
       console.log("async.2 in fetchPostList()...", this.user);
     },
 
     serverPage(item) {
       console.log("serverPage()...", item);
       location.href = `/blog/post_detail.html?id=${item}`;
+    },
+
+    async fetchCateList() {
+      console.log("fetchCateList()...");
+      axios
+        .get("/api2/category/")
+        .then((res) => {
+          console.log("CATEGORY GET RES", res);
+          this.cateList = res.data.cateList;
+        })
+        .catch((err) => {
+          console.log("CATEGORY GET ERR.RESPONSE", err.response);
+          alert(err.response.status + " " + err.response.statusText);
+        });
+    },
+
+    categoryPage(category) {
+      console.log("serverPage()...", category);
+      location.href = `/?category=${category}`;
     },
   },
 };
