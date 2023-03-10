@@ -1,13 +1,11 @@
-import json
-
 def get_prev_next(instance):
     try:
-        prev = instance.get_previous_by_modify_dt()
+        prev = instance.get_prev()
     except instance.DoesNotExist:
         prev = None
     
     try:
-        next_ = instance.get_next_by_modify_dt()
+        next_ = instance.get_next()
     except instance.DoesNotExist:
         next_ = None
     
