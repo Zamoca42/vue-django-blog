@@ -94,11 +94,16 @@
     <v-row align="center" justify="center">
       <div class="text-center">
         <!-- Pagination -->
-        <v-pagination
+        <template v-if="pageCnt === 1">
+        </template>
+        <template v-else>
+          <v-pagination
           v-model="page"
-          :length="4"
+          :length="pageCnt"
           rounded="circle"
+          @click="fetchPostList(page)"
         ></v-pagination>
+        </template>
       </div>
     </v-row>
   </v-container>
@@ -119,10 +124,11 @@ export default {
     cateList: [],
     tagname: "",
     category: "",
+    page:1,
     pageCnt: 1,
     curPage: 1,
     // image: "",
-    defaultImageUrl: "https://picsum.photos/400/200",
+    defaultImageUrl: "https://picsum.photos/id/366/400/200",
   }),
 
   computed: {
@@ -136,22 +142,22 @@ export default {
     this.tagname = params.get("tagname");
     this.category = params.get("category");
     this.fetchPostList();
-    this.fetchCateList();
     console.log("async.1 in created()...");
   },
 
   mounted() {
     // console.log("mounted(PostList.vue)...", this.user);
+    this.fetchCateList();
   },
 
   methods: {
-    async fetchPostList() {
-      console.log("fetchPostList()...", this.tagname, this.category);
+    async fetchPostList(page = 1) {
+      console.log("fetchPostList()...", page, this.tagname, this.category);
 
       let getUrl = "";
-      if (this.tagname) getUrl = `/api2/post/?tagname=${this.tagname}`;
-      else if (this.category) getUrl = `/api2/post/?category=${this.category}`;
-      else getUrl = `/api2/post/`;
+      if (this.tagname) getUrl = `/api2/post/?page=${page}&tagname=${this.tagname}`;
+      else if (this.category) getUrl = `/api2/post/?page=${page}&category=${this.category}`;
+      else getUrl = `/api2/post/?page=${page}`;
 
       axios
         .get(getUrl)
