@@ -101,8 +101,9 @@
           v-model="page"
           :length="pageCnt"
           rounded="circle"
-          @click="fetchPostList(page)"
-        ></v-pagination>
+          @click.stop="pageChange(page)"
+        >
+        </v-pagination>
         </template>
       </div>
     </v-row>
@@ -129,10 +130,11 @@ export default {
     ],
     tagname: "",
     category: "",
-    page:1,
+    page: 1,
     pageCnt: 1,
     curPage: 1,
     defaultImageUrl: "https://picsum.photos/id/366/400/200",
+    // isLoading: false,
   }),
 
   computed: {},
@@ -197,6 +199,15 @@ export default {
     categoryPage(category) {
       console.log("serverPage()...", category);
       location.href = `/?category=${category}`;
+    },
+
+    pageChange(page) {
+      // console.log("pageChanged()...", page);
+      if (this.curPage === page) return
+      else {
+        this.curPage = page;
+        this.fetchPostList(page);
+      }
     },
   },
 };
