@@ -1,5 +1,6 @@
 #folders
 media/
+static/
 
 #files
 secrets.json
