@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import json
-import markdown
 from datetime import datetime
 import time
 from pathlib import Path

@@ -18,7 +18,6 @@ from django.urls import path, include
 # from . import views
 from django.conf.urls.static import static
 from django.conf import settings
-from filebrowser.sites import site
 # from markdownx.views import ImageUploadView,MarkdownifyView
 # from api.views_util import markdown_uploader
 
