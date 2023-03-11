@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+# from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 from filebrowser.sites import site
@@ -24,7 +24,7 @@ from filebrowser.sites import site
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+    # path('api/', include('api.urls')),
     path('api2/', include('apiv2.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
