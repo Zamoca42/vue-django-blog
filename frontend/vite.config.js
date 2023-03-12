@@ -56,7 +56,7 @@ export default defineConfig({
         // home: resolve(__dirname, 'src', 'pages', 'home.html'),
         list: resolve(__dirname, 'src', 'pages', 'blog', 'post_list.html'),
         detail: resolve(__dirname, 'src', 'pages', 'blog', 'post_detail.html'),
-        info: resolve(__dirname, 'src', 'pages', 'info.html')
+        // info: resolve(__dirname, 'src', 'pages', 'info.html')
       }
     }
   },
