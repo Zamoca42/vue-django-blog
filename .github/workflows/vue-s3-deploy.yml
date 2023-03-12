@@ -1,10 +1,10 @@
-name: Main CI # action 명
+name: Frontend CI # action 명
 
 on: # 이벤트 트리거
   push: # push event에 반응
    paths:
       - "frontend/**" # frontend의 변경이 있을 때
-    branches: # github repository의 branch가 
+   branches: # github repository의 branch가 
       - main # main 일 경우만
 
 jobs: 
@@ -13,7 +13,10 @@ jobs:
     steps:
       - name: git clone # 
         uses: actions/checkout@v3 # 
-        working-directory: frontend/
+
+      - name: Move Vue project folder
+        run: cd
+        working-directory: frontend
       
       - name: Install dependencies
         run: yarn install # npm install
