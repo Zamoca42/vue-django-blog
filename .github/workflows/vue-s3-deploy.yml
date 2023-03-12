@@ -1,0 +1,32 @@
+name: Main CI # action 명
+
+on: # 이벤트 트리거
+  push: # push event에 반응
+   paths:
+      - "frontend/**" # frontend의 변경이 있을 때
+    branches: # github repository의 branch가 
+      - main # main 일 경우만
+
+jobs: 
+  Clone: # GitHub-hosted runners env
+    runs-on: ubuntu-22.04 # using Ubuntu 22.04 LTS
+    steps:
+      - name: git clone # 
+        uses: actions/checkout@v3 # 
+        working-directory: frontend/
+      
+      - name: Install dependencies
+        run: yarn install # npm install
+
+      - name: build # 
+        run: yarn build # code build
+
+      - name: deploy # 배포
+        env:
+          AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            dist s3://vue-blog-frontend
