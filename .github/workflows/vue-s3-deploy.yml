@@ -8,12 +8,8 @@ on: # 이벤트 트리거
       - main # main 일 경우만
 
 jobs: 
-  deploy: # GitHub-hosted runners env
-    runs-on: ubuntu-22.04 # using Ubuntu 22.04 LTS
-    defaults:
-      run:
-        working-directory: "fronend"
-
+  clone: # GitHub-hosted runners env
+    runs-on: ubuntu-latest # using Ubuntu 22.04 LTS
     steps:
       - name: git clone # 
         uses: actions/checkout@v3 # 
@@ -21,6 +17,13 @@ jobs:
       - name: Install dependencies
         run: yarn install # npm install
 
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "fronend"
+
+    steps:
       - name: build # 
         run: yarn build # code build
 
