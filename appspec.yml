@@ -13,6 +13,6 @@ files:
     destination: /home/ubuntu/backend
 hooks:
   BeforeInstall:
-    - location: scripts/beforeInstall.bash
+    - location: beforeInstall.bash
   AfterInstall:
     - location: scripts/afterInstall.bash
