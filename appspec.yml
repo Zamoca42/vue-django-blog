@@ -15,4 +15,4 @@ hooks:
   BeforeInstall:
     - location: beforeInstall.sh
   AfterInstall:
-    - location: scripts/afterInstall.sh
+    - location: backend/scripts/afterInstall.sh
