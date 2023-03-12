@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest # using Ubuntu 22.04 LTS
     defaults:
       run:
-        working-directory: "fronend"
+        working-directory: "frontend"
         
     steps:
       - name: git clone
