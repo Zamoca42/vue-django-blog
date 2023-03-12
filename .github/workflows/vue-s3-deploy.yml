@@ -8,14 +8,15 @@ on: # 이벤트 트리거
       - main # main 일 경우만
 
 jobs: 
-  Clone: # GitHub-hosted runners env
+  deploy: # GitHub-hosted runners env
     runs-on: ubuntu-22.04 # using Ubuntu 22.04 LTS
+    defaults:
+      run:
+        working-directory: "fronend"
+
     steps:
       - name: git clone # 
         uses: actions/checkout@v3 # 
-
-      - name: Move Vue project folder
-        run: cd frontend
       
       - name: Install dependencies
         run: yarn install # npm install
