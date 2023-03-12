@@ -4,15 +4,15 @@ permissions:
   - object: /home/ubuntu/
     owner: ubuntu
     group: ubuntu
-    mode: 644
+    mode: 774
     type:
       - directory
       - file
 files:
-  - source: ./backend
+  - source: ./backend/
     destination: /home/ubuntu/backend
-# hooks:
-#   BeforeInstall:
-#     - location: scripts/beforeInstall.bash
-#   AfterInstall:
-#     - location: scripts/afterInstall.bash
+hooks:
+  BeforeInstall:
+    - location: backend/scripts/beforeInstall.bash
+  AfterInstall:
+    - location: backend/scripts/afterInstall.bash
