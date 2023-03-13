@@ -1,0 +1,35 @@
+name: Backend CI # action 명
+
+on: # 이벤트 트리거
+  push: # push event에 반응
+    paths:
+      - "backend/**" # backend의 변경이 있을 때
+    branches: # github repository의 branch가 
+      - main # main 일 경우만
+
+jobs: 
+  deploy: # GitHub-hosted runners env
+    runs-on: macos-latest # using macOS Monterey 12
+    defaults:
+      run:
+        working-directory: "backend"
+        
+    steps:
+      - name: git clone
+        uses: actions/checkout@v3
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Create CodeDeploy Deployment
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name DjangoToEC2Deploy \
+            --deployment-group-name autoDeployGroup \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
