@@ -1,4 +1,4 @@
-name: Frontend CI # action 명
+name: Frontend Deploy # action 명
 
 on: # 이벤트 트리거
   push: # push event에 반응
