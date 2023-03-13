@@ -1,1 +1,1 @@
-frontend ci 테스트 7
+frontend ci 테스트
