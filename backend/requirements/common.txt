@@ -1,10 +1,5 @@
-django~=4.1.7
-djangorestframework
-taggit
-
 # django-cors-headers
 pillow
-
 requests
 bleach
 asgiref==3.6.0
