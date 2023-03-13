@@ -8,6 +8,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'ec2-43-201-163-241.ap-northeast-2.compute.amazonaws.com',
+    '43.201.163.241',
 ]
 
 # Database
