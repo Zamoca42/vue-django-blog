@@ -30,9 +30,11 @@ jobs:
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
           AWS_DEFAULT_REGION: '${{ secrets.AWS_REGION }}'
         run: |
-          aws deploy create-deployment \
+          deployment=$(aws deploy create-deployment \
             --application-name DjangoToEC2Deploy \
             --deployment-group-name autoDeployGroup \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --file-exists-behavior OVERWRITE \
-            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}\
+            --wait)
+          echo $deployment
