@@ -6,7 +6,9 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    get_secret("AWS_EC2_PUBLIC_IP"),
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

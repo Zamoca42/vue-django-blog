@@ -7,8 +7,7 @@ from .base import *
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'ec2-43-201-163-241.ap-northeast-2.compute.amazonaws.com',
-    '43.201.163.241',
+    get_secret("AWS_EC2_PUBLIC_IP"),
 ]
 
 # Database

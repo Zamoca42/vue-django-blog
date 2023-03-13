@@ -5,6 +5,7 @@ static/
 #files
 secrets.json
 templates/blog/widget.html
+mysite.service.txt
 
 # Created by https://www.toptal.com/developers/gitignore/api/django,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,macos
