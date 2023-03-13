@@ -7,7 +7,7 @@ from .base import *
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    get_secret("AWS_EC2_PUBLIC_IP"),
+   '*'
 ]
 
 # Database
