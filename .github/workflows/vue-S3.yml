@@ -8,15 +8,22 @@ on: # 이벤트 트리거
       - main # main 일 경우만
 
 jobs: 
-  build: # GitHub-hosted runners env
-    runs-on: ubuntu-latest # using Ubuntu 22.04 LTS
+  deploy: # GitHub-hosted runners env
+    runs-on: ${{ matrix.os }} # using Ubuntu & MacOS
+
     defaults:
       run:
         working-directory: "frontend"
-        
+
+    strategy: # Multiple Operating Systems
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+
+    name: Node on ${{ matrix.os }}
     steps:
-      - name: git clone
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       
       - name: Set Node.js 18.x
         uses: actions/setup-node@v3
@@ -28,16 +35,6 @@ jobs:
 
       - name: Build page
         run: yarn build
-
-      # - name: Run install
-      #   uses: borales/actions-yarn@v4
-      #   with:
-      #     cmd: install # will run `yarn install` command
-  
-      # - name: Build production bundle
-      #   uses: borales/actions-yarn@v4
-      #   with:
-      #     cmd: build # will run `yarn build` command
 
       - name: deploy # 배포
         env:
