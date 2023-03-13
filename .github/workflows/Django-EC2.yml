@@ -32,5 +32,5 @@ jobs:
             --application-name DjangoToEC2Deploy \
             --deployment-group-name autoDeployGroup \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
-            --file-exists-behavior OVERWRITE
+            --file-exists-behavior OVERWRITE \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
