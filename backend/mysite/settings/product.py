@@ -6,21 +6,18 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['.elasticbeanstalk.com']
+ALLOWED_HOSTS = []
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ['DATABASE_NAME'],
-        'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': get_secret("AWS_RDS_HOST"),
+        'PORT': '5432',
+        'NAME': get_secret("AWS_RDS_NAME"),
+        'USER': get_secret("AWS_RDS_USER"),
+        'PASSWORD': get_secret("AWS_RDS_PASSWORD"),
     }
 }
