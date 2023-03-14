@@ -157,10 +157,10 @@ export default {
     async fetchPostList(page = 1) {
       console.log("fetchPostList()...", page, this.tagname, this.category);
 
-      let getUrl = "";
-      if (this.tagname) getUrl = `/api2/post/?page=${page}&tagname=${this.tagname}`;
-      else if (this.category) getUrl = `/api2/post/?page=${page}&category=${this.category}`;
-      else getUrl = `/api2/post/?page=${page}`;
+      let getUrl = "http://43.201.163.241";
+      if (this.tagname) getUrl += `/api2/post/?page=${page}&tagname=${this.tagname}`;
+      else if (this.category) getUrl += `/api2/post/?page=${page}&category=${this.category}`;
+      else getUrl += `/api2/post/?page=${page}`;
 
       axios
         .get(getUrl)
@@ -198,7 +198,7 @@ export default {
 
     categoryPage(category) {
       console.log("serverPage()...", category);
-      location.href = `/?category=${category}`;
+      location.href = `blog/?category=${category}`;
     },
 
     pageChange(page) {

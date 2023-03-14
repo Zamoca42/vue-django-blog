@@ -77,7 +77,7 @@ export default {
     fetchPostDetail(postId) {
       console.log("fetchPostDetail()...", postId);
       axios
-        .get(`/api2/post/${postId}/`)
+        .get(`http://43.201.163.241/api2/post/${postId}/`)
         .then((res) => {
           console.log("POST DETAIL GET RES", res);
           this.post = res.data.post;
