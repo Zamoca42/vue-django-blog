@@ -9,19 +9,12 @@ on: # 이벤트 트리거
 
 jobs: 
   deploy: # GitHub-hosted runners env
-    runs-on: ${{ matrix.os }} # using Ubuntu & MacOS
+    runs-on: macos-latest # using MacOS
 
     defaults:
       run:
-        working-directory: "frontend"
+        working-directory: "frontend" # frontend 폴더에서 실행
 
-    strategy: # Multiple Operating Systems
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-
-    name: Node on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       
@@ -36,12 +29,16 @@ jobs:
       - name: Build page
         run: yarn build
 
+      - name: remove 삭제
+        env:
+          AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+        run: |
+          aws s3 rm --recursive --region ap-northeast-2 . s3://vue-blog-frontend
+
       - name: deploy # 배포
         env:
           AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
         run: |
-          aws s3 cp \
-            --recursive \
-            --region ap-northeast-2 \
-            dist s3://vue-blog-frontend
+          aws s3 cp --recursive --region ap-northeast-2 dist s3://vue-blog-frontend
