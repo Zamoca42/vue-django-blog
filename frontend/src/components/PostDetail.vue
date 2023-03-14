@@ -58,6 +58,7 @@
 
 <script>
 import axios from "axios";
+import axios from "./index.js";
 
 export default {
   data: () => ({

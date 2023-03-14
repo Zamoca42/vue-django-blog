@@ -114,6 +114,7 @@
 import axios from "axios";
 // import { user } from "./globals.js";
 // import image from 'https://picsum.photos/900/300?grayscale'
+import axios from "./index.js";
 
 export default {
   setup() {

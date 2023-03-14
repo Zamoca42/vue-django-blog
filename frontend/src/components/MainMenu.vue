@@ -93,7 +93,8 @@
 
 <script>
 import axios from "axios";
-import { user } from "./globals.js";
+// import { user } from "./globals.js";
+import axios from "./index.js";
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
