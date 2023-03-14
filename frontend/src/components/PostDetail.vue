@@ -88,7 +88,6 @@ export default {
         .catch((err) => {
           console.log("POST DETAIL GET ERR.RESPONSE", err.response);
           alert(err.response.status + " " + err.response.statusText);
-          self.location = '/';
         });
     },
 

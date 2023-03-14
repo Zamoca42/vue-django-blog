@@ -199,7 +199,7 @@ export default {
 
     categoryPage(category) {
       console.log("serverPage()...", category);
-      location.href = `/?category=${category}`;
+      location.href = `/blog/post_list.html?category=${category}`;
     },
 
     pageChange(page) {

@@ -101,7 +101,7 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 export default {
   setup() {
-    return { user };
+    // return { user };
   },
 
   data: () => ({
@@ -109,7 +109,7 @@ export default {
     dialog: false,
     tagCloud: [],
     items: [
-      { text: "Info", href: "/info.html" },
+      { text: "Info", href: "/Info.html" },
       { text: "Blog", href: "/" },
     ],
   }),
