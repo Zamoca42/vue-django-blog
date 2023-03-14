@@ -7,9 +7,9 @@ from .base import *
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    get_secret("AWS_STATIC_IP"),
-    '*.zamoca.space',
-    '.zamoca.space',
+    # get_secret("AWS_STATIC_IP"),
+    # '*.zamoca.space',
+    # '.zamoca.space',
     '*',
 ]
 

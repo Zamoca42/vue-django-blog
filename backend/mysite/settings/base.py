@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
+    "corsheaders",
     # base
     'django.contrib.admin',
     'django.contrib.auth',
@@ -56,6 +57,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # cors
+    "corsheaders.middleware.CorsMiddleware",
     # base
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -137,7 +140,7 @@ TAGGIT_CASE_INSENSITIVE = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
-CSRF_TRUSTED_ORIGINS = ['http://www.zamoca.space:3000', 'http://www.zamoca.space:3000']
+
 
 # CKEDITOR
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
@@ -151,3 +154,21 @@ CKEDITOR_RESTRICT_BY_DATE = True
 # TAGGIT_CASE_INSENSITIVE = True
 
 SESSION_COOKIE_HTTPONLY = True
+
+# CORS
+
+CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://vue-blog-frontend.s3-website.ap-northeast-2.amazonaws.com",
+#     "https://dylvkunb82zd9.cloudfront.net",
+#     "http://*.zamoca.space",
+# ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://vue-blog-frontend.s3-website.ap-northeast-2.amazonaws.com",
+    "https://dylvkunb82zd9.cloudfront.net",
+    "http://*.zamoca.space",
+]
