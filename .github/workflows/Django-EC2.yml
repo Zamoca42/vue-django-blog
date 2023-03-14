@@ -9,7 +9,7 @@ on: # 이벤트 트리거
 
 jobs: 
  deploy: # GitHub-hosted runners env
-    runs-on: - ubuntu-latest # using Ubuntu
+    runs-on: ubuntu-latest # using Ubuntu
 
     defaults:
       run:

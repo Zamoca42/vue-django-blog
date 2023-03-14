@@ -33,12 +33,14 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+          AWS_DEFAULT_REGION: '${{ secrets.AWS_REGION }}'
         run: |
-          aws s3 rm --recursive --region ap-northeast-2 . s3://vue-blog-frontend
+          aws s3 rm s3://vue-blog-frontend --recursive
 
       - name: deploy # 배포
         env:
           AWS_ACCESS_KEY_ID: '${{ secrets.AWS_ACCESS_KEY_ID }}'
           AWS_SECRET_ACCESS_KEY: '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+          AWS_DEFAULT_REGION: '${{ secrets.AWS_REGION }}'
         run: |
-          aws s3 cp --recursive --region ap-northeast-2 dist s3://vue-blog-frontend
+          aws s3 cp --recursive dist s3://vue-blog-frontend
