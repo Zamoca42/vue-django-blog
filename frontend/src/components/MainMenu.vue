@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 // import { user } from "./globals.js";
 import axios from "./index.js";
 
