@@ -132,7 +132,7 @@ export default {
     fetchTagCloud() {
       console.log("fetchTagCloud()...");
       axios
-        .get("http://43.201.163.241/api2/tag/cloud/")
+        .get("/api2/tag/cloud/")
         .then((res) => {
           console.log("TAG CLOUD GET RES", res);
           this.tagCloud = res.data.tagList;
@@ -158,7 +158,7 @@ export default {
 
     serverPage(tagname) {
       console.log("serverPage()...", tagname);
-      location.href = `blog/?tagname=${tagname}`;
+      location.href = `/?tagname=${tagname}`;
     },
   },
 };
