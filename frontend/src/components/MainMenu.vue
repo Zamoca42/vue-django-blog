@@ -110,7 +110,7 @@ export default {
     tagCloud: [],
     items: [
       { text: "Info", href: "/Info.html" },
-      { text: "Blog", href: "/" },
+      { text: "Blog", href: "/blog/post_list.html" },
     ],
   }),
 
