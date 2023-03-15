@@ -140,12 +140,16 @@ TAGGIT_CASE_INSENSITIVE = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
-
-
 # CKEDITOR
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_RESTRICT_BY_DATE = True
+
+CKEDITOR_CONFIGS = {
+    'default': {
+         "removePlugins": "exportpdf",
+    }
+}
 
 # REST_FRAMEWORK = {
 #     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',]
@@ -157,18 +161,14 @@ SESSION_COOKIE_HTTPONLY = True
 
 # CORS
 
-CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
-
 CORS_ALLOW_CREDENTIALS = True
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://vue-blog-frontend.s3-website.ap-northeast-2.amazonaws.com",
-#     "https://dylvkunb82zd9.cloudfront.net",
-#     "http://*.zamoca.space",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://www.zamoca.space",
+    "https://www.zamoca.space",
+]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://vue-blog-frontend.s3-website.ap-northeast-2.amazonaws.com",
-    "https://dylvkunb82zd9.cloudfront.net",
-    "http://*.zamoca.space",
+    "http://www.zamoca.space",
+    "https://www.zamoca.space",
 ]

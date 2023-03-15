@@ -7,8 +7,10 @@ from .base import *
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    get_secret("AWS_EC2_PUBLIC_IP"),
+    'server.zamoca.space',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
