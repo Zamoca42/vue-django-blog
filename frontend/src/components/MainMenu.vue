@@ -159,7 +159,7 @@ export default {
 
     serverPage(tagname) {
       console.log("serverPage()...", tagname);
-      location.href = `/?tagname=${tagname}`;
+      location.href = `/blog/post_list.html?tagname=${tagname}`;
     },
   },
 };
