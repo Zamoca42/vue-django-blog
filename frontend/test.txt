@@ -1,1 +1,1 @@
-frontend ci 테스트
+frontend ci test
