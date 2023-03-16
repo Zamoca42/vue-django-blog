@@ -37,10 +37,10 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '^/api': 'server.zamoca.space',
-      '^/admin': 'server.zamoca.space',
-      '^/static': 'server.zamoca.space',
-      '^/media': 'server.zamoca.space',
+      '^/api': 'http://127.0.0.1:8000',
+      '^/admin': 'http://127.0.0.1:8000',
+      '^/static': 'http://127.0.0.1:8000',
+      '^/media': 'http://127.0.0.1:8000',
     }      
   },
 

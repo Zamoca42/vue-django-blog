@@ -113,7 +113,6 @@
 <script>
 // import axios from "axios";
 // import { user } from "./globals.js";
-// import image from 'https://picsum.photos/900/300?grayscale'
 import axios from "./index.js";
 
 export default {
@@ -135,7 +134,6 @@ export default {
     pageCnt: 1,
     curPage: 1,
     defaultImageUrl: "https://picsum.photos/id/366/400/200",
-    // isLoading: false,
   }),
 
   computed: {},
