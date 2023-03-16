@@ -30,26 +30,12 @@ jobs:
 
       - name: Create CodeDeploy Deployment
         run: |
-          deploymend_id=$(aws deploy create-deployment \
+          aws deploy create-deployment \
             --application-name DjangoToEC2Deploy \
             --deployment-group-name autoDeployGroup \
             --deployment-config-name CodeDeployDefault.AllAtOnce \
             --file-exists-behavior OVERWRITE \
-            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}\
-            --query "deploymentId" \
-            --output text)
-          echo "Deployment ID: $deployment_id"
-          
-            status=""
-            while [ "$status" != "Succeeded" -a "$status" != "Failed" -a "$status" != "Stopped" ]
-            do
-              sleep 30
-              status=$(aws deploy get-deployment \
-                --deployment-id $deployment_id \
-                --query "deploymentInfo.status" \
-                --output text)
-              echo "Deployment Status: $status"
-            done
+            --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
       
       # - name: Get CodeDeploy deployment status
       #   run: |
