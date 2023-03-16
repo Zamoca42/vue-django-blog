@@ -7,7 +7,7 @@ from .base import *
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'server.zamoca.space',
+    # 'server.zamoca.space',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect

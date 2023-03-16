@@ -36,6 +36,8 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 # Application definition
 
+SERVER_URL = 'https://server.zamoca.space'
+
 INSTALLED_APPS = [
     # app
     'api',

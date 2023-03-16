@@ -42,16 +42,6 @@ class PostListAPIView(ListAPIView):
             qs = Post.objects.all()
         return qs
 
-    def get_serializer_context(self):
-      """
-      Extra context provided to the serializer class.
-      """
-      return {
-          'request': None,
-          'format': self.format_kwarg,
-          'view': self
-      }
-
 
 class PostRetrieveAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
@@ -68,15 +58,6 @@ class PostRetrieveAPIView(RetrieveAPIView):
         serializer = self.get_serializer(instance=data)
         return Response(serializer.data)
     
-    def get_serializer_context(self):
-      """
-      Extra context provided to the serializer class.
-      """
-      return {
-          'request': None,
-          'format': self.format_kwarg,
-          'view': self
-      }
 
 # class CateTagAPIView(APIView):
 #     def get(self, request, *args, **kwargs):
