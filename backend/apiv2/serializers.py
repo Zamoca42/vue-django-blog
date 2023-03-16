@@ -30,11 +30,31 @@ class PostListSerializer(serializers.ModelSerializer):
     #         representation['image'] = null
     #     return representation
 
+    # def get_image(self, obj):
+    #     if obj.image:
+    #         request = self.context.get('request')
+    #         server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
+    #         return 'http://{}/{}'.format(server_url, obj.image.url)
+    #     else:
+    #         return None
+    
+    # def get_image(self, obj):
+    #     if obj.image:
+    #         request = self.context.get('request')
+    #         server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
+    #         protocol = 'https' if request.is_secure() else 'http'
+    #         return f"{protocol}://{server_url}{obj.image.url}"
+    #     else:
+    #         return None
+    
     def get_image(self, obj):
         if obj.image:
             request = self.context.get('request')
             server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
-            return 'http://{}/{}'.format(server_url, obj.image.url)
+            if request.is_secure():
+                return f'https://{server_url}{obj.image.url}'
+            else:
+                return f'http://{server_url}{obj.image.url}'
         else:
             return None
 
