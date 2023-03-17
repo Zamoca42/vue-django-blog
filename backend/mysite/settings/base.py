@@ -38,6 +38,8 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 SERVER_URL = 'https://server.zamoca.space'
 
+X_FRAME_OPTIONS = 'SAMEORIGIN' 
+
 INSTALLED_APPS = [
     # app
     'api',
@@ -45,11 +47,9 @@ INSTALLED_APPS = [
     'apiv2',
     # 3rd-party
     'taggit',
-    # 'ckeditor',
-    # 'ckeditor_uploader',
-    'django_ckeditor_5',
     'rest_framework',
-    "corsheaders",
+    'corsheaders',
+    'mdeditor',
     # base
     'django.contrib.admin',
     'django.contrib.auth',
@@ -91,7 +91,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -143,104 +142,35 @@ TAGGIT_CASE_INSENSITIVE = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# # CKEDITOR
-# CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-# CKEDITOR_UPLOAD_PATH = "uploads/"
-# CKEDITOR_RESTRICT_BY_DATE = True
-
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#          "removePlugins": "exportpdf",
-#     }
-# }
-
-# CKEDITOR 5
-customColorPalette = [
-        {
-            'color': 'hsl(4, 90%, 58%)',
-            'label': 'Red'
-        },
-        {
-            'color': 'hsl(340, 82%, 52%)',
-            'label': 'Pink'
-        },
-        {
-            'color': 'hsl(291, 64%, 42%)',
-            'label': 'Purple'
-        },
-        {
-            'color': 'hsl(262, 52%, 47%)',
-            'label': 'Deep Purple'
-        },
-        {
-            'color': 'hsl(231, 48%, 48%)',
-            'label': 'Indigo'
-        },
-        {
-            'color': 'hsl(207, 90%, 54%)',
-            'label': 'Blue'
-        },
-    ]
-
-CKEDITOR_5_CONFIGS = {
-    'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
-                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
-
-    },
-    'extends': {
-        'blockToolbar': [
-            'paragraph', 'heading1', 'heading2', 'heading3',
-            '|',
-            'bulletedList', 'numberedList',
-            '|',
-            'blockQuote',
-        ],
-        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
-        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
-                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
-                    'insertTable',],
-        'image': {
-            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
-                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side',  '|'],
-            'styles': [
-                'full',
-                'side',
-                'alignLeft',
-                'alignRight',
-                'alignCenter',
-            ]
-
-        },
-        'table': {
-            'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells',
-            'tableProperties', 'tableCellProperties' ],
-            'tableProperties': {
-                'borderColors': customColorPalette,
-                'backgroundColors': customColorPalette
-            },
-            'tableCellProperties': {
-                'borderColors': customColorPalette,
-                'backgroundColors': customColorPalette
-            }
-        },
-        'heading' : {
-            'options': [
-                { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
-                { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
-                { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
-                { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
-            ]
-        }
-    },
-    'list': {
-        'properties': {
-            'styles': 'true',
-            'startIndex': 'true',
-            'reversed': 'true',
-        }
+MDEDITOR_CONFIGS = {
+    'default':{
+        'width': '100%',  # Custom edit box width
+        'height': 500,  # Custom edit box height
+        'toolbar': ["undo", "redo", "|",
+                    "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                    "h1", "h2", "h3", "h5", "h6", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime",
+                    "emoji", "html-entities", "pagebreak", "goto-line", "|",
+                    "help", "info",
+                    "||", "preview", "watch", "fullscreen"],  # custom edit box toolbar 
+        'upload_image_formats': ["jpg", "jpeg", "gif", "png", "bmp", "webp"],  # image upload format type
+        'image_folder': 'editor',  # image save the folder name
+        'theme': 'default',  # edit box theme, dark / default
+        'preview_theme': 'default',  # Preview area theme, dark / default
+        'editor_theme': 'default',  # edit area theme, pastel-on-dark / default
+        'toolbar_autofixed': True,  # Whether the toolbar capitals
+        'search_replace': True,  # Whether to open the search for replacement
+        'emoji': True,  # whether to open the expression function
+        'tex': True,  # whether to open the tex chart function
+        'flow_chart': True,  # whether to open the flow chart function
+        'sequence': True, # Whether to open the sequence diagram function
+        'watch': True,  # Live preview
+        'lineWrapping': False,  # lineWrapping
+        'lineNumbers': False,  # lineNumbers
+        'language': 'en'  # zh / en / es 
     }
+    
 }
 
 
