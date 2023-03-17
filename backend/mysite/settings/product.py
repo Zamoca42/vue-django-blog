@@ -13,6 +13,7 @@ ALLOWED_HOSTS = [
 STATIC_ROOT = BASE_DIR / 'static/'
 STATICFILES_DIRS = []
 
+MEDIA_URL = 'https://server.zamoca.space/media/'
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 # Database

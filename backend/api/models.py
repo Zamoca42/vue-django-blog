@@ -7,6 +7,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from taggit.models import TaggedItem
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Post(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
@@ -14,7 +15,8 @@ class Post(models.Model):
     title = models.CharField(verbose_name='TITLE', max_length=50)
     description = models.CharField('DESCRIPTION', max_length=100, blank=True, help_text='simple description text.')
     image = models.ImageField('IMAGE', upload_to='blog/%Y/%m/', blank=True, null=True)
-    content = models.TextField('CONTENT')
+    # content = models.TextField('CONTENT')
+    content = CKEditor5Field('content', config_name='extends')
     create_dt = models.DateTimeField('CREATE DATE', auto_now_add=True)
     modify_dt = models.DateTimeField('MODIFY DATE', auto_now=True)
     tags = TaggableManager(blank=True)
