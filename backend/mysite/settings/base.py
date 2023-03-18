@@ -14,6 +14,7 @@ from datetime import datetime
 import time
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
+import mysite.custom_storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -38,6 +39,8 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 SERVER_URL = 'https://server.zamoca.space'
 
+X_FRAME_OPTIONS = 'SAMEORIGIN' 
+
 INSTALLED_APPS = [
     # app
     'api',
@@ -45,10 +48,10 @@ INSTALLED_APPS = [
     'apiv2',
     # 3rd-party
     'taggit',
-    'ckeditor',
-    'ckeditor_uploader',
     'rest_framework',
-    "corsheaders",
+    'corsheaders',
+    'mdeditor',
+    'storages',
     # base
     'django.contrib.admin',
     'django.contrib.auth',
@@ -90,7 +93,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -142,16 +144,50 @@ TAGGIT_CASE_INSENSITIVE = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# CKEDITOR
-CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_RESTRICT_BY_DATE = True
+# django-storages-S3
+AWS_ACCESS_KEY_ID = get_secret("AWS_S3_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = get_secret("AWS_S3_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = 'vue-blog-frontend'
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_ADDRESSING_STYLE = 'path'
+AWS_S3_CUSTOM_DOMAIN = 'www.zamoca.space'
 
-CKEDITOR_CONFIGS = {
-    'default': {
-         "removePlugins": "exportpdf",
+DEFAULT_FILE_STORAGE = 'mysite.custom_storage.MediaStorage'
+STATICFILES_STORAGE = 'mysite.custom_storage.StaticStorage'
+
+# MDeditor
+MDEDITOR_CONFIGS = {
+    'default':{
+        'width': '100%',  # Custom edit box width
+        'height': 500,  # Custom edit box height
+        'toolbar': ["undo", "redo", "|",
+                    "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                    "h1", "h2", "h3", "h5", "h6", "|",
+                    "list-ul", "list-ol", "hr", "|",
+                    "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime",
+                    "emoji", "html-entities", "pagebreak", "goto-line", "|",
+                    "help", "info",
+                    "||", "preview", "watch", "fullscreen"],  # custom edit box toolbar 
+        'upload_image_formats': ["jpg", "jpeg", "gif", "png", "bmp", "webp"],  # image upload format type
+        'image_folder': 'editor',  # image save the folder name
+        'theme': 'default',  # edit box theme, dark / default
+        'preview_theme': 'default',  # Preview area theme, dark / default
+        'editor_theme': 'default',  # edit area theme, pastel-on-dark / default
+        'toolbar_autofixed': True,  # Whether the toolbar capitals
+        'search_replace': True,  # Whether to open the search for replacement
+        'emoji': True,  # whether to open the expression function
+        'tex': True,  # whether to open the tex chart function
+        'flow_chart': True,  # whether to open the flow chart function
+        'sequence': True, # Whether to open the sequence diagram function
+        'watch': True,  # Live preview
+        'lineWrapping': False,  # lineWrapping
+        'lineNumbers': False,  # lineNumbers
+        'language': 'en'  # zh / en / es 
     }
+    
 }
+
 
 # REST_FRAMEWORK = {
 #     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',]

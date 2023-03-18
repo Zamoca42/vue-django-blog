@@ -2,18 +2,14 @@ from django.contrib import admin
 from api.models import Post, Category
 from django.db import models
 from django import forms
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
-
-class PostAdminForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorUploadingWidget())
-    class Meta:
-        model = Post
-        fields = '__all__'
+from mdeditor.widgets import MDEditorWidget
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'category', 'title', 'image', 'modify_dt',)
-    form = PostAdminForm
+    formfield_overrides = {
+        models.TextField: {'widget': MDEditorWidget}
+    }
 
     def get_queryset(self, request):
         return super().get_queryset(request)
