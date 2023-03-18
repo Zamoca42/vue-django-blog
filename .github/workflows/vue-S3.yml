@@ -41,7 +41,8 @@ jobs:
       
       - name: remove # 삭제
         run: |
-          aws s3 rm s3://vue-blog-frontend --recursive
+          aws s3 rm s3://vue-blog-frontend/assets/ --recursive
+          aws s3 rm s3://vue-blog-frontend/blog/ --recursive
 
       - name: deploy # 배포
         run: |
