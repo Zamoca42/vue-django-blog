@@ -14,6 +14,7 @@ from datetime import datetime
 import time
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
+import mysite.custom_storage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'mdeditor',
+    'storages',
     # base
     'django.contrib.admin',
     'django.contrib.auth',
@@ -142,6 +144,19 @@ TAGGIT_CASE_INSENSITIVE = True
 
 AUTH_USER_MODEL = 'accounts.User'
 
+# django-storages-S3
+AWS_ACCESS_KEY_ID = get_secret("AWS_S3_ACCESS_KEY")
+AWS_SECRET_ACCESS_KEY = get_secret("AWS_S3_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = 'vue-blog-frontend'
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_ADDRESSING_STYLE = 'path'
+AWS_S3_CUSTOM_DOMAIN = 'www.zamoca.space'
+
+DEFAULT_FILE_STORAGE = 'mysite.custom_storage.MediaStorage'
+STATICFILES_STORAGE = 'mysite.custom_storage.StaticStorage'
+
+# MDeditor
 MDEDITOR_CONFIGS = {
     'default':{
         'width': '100%',  # Custom edit box width

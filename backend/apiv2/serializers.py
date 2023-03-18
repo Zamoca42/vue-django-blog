@@ -10,7 +10,7 @@ class PostListSerializer(serializers.ModelSerializer):
     # tag_names = serializers.SerializerMethodField()
     tags = serializers.StringRelatedField(many=True)
     modify_dt = serializers.DateTimeField(format='%B %d, %Y')
-    image = serializers.SerializerMethodField()
+    # image = serializers.SerializerMethodField()
 
     # def get_tag_names(self, obj):
     #     return [tag.name for tag in obj.tags.all()]
@@ -47,16 +47,16 @@ class PostListSerializer(serializers.ModelSerializer):
     #     else:
     #         return None
     
-    def get_image(self, obj):
-        if obj.image:
-            request = self.context.get('request')
-            server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
-            if request.is_secure():
-                return f'https://{server_url}{obj.image.url}'
-            else:
-                return f'http://{server_url}{obj.image.url}'
-        else:
-            return None
+    # def get_image(self, obj):
+    #     if obj.image:
+    #         request = self.context.get('request')
+    #         server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
+    #         if request.is_secure():
+    #             return f'https://{server_url}{obj.image.url}'
+    #         else:
+    #             return f'http://{server_url}{obj.image.url}'
+    #     else:
+    #         return None
 
 class PostRetrieveSerializer(serializers.ModelSerializer):
     category = serializers.CharField(source='category.name', default='New')

@@ -14,7 +14,7 @@ class Post(models.Model):
     # tags = models.ManyToManyField('Tag', blank=True)
     title = models.CharField(verbose_name='TITLE', max_length=50)
     description = models.CharField('DESCRIPTION', max_length=100, blank=True, help_text='simple description text.')
-    image = models.ImageField('IMAGE', upload_to='blog/%Y/%m/', blank=True, null=True)
+    image = models.FileField('IMAGE', upload_to='blog/%Y/%m/', blank=True, null=True)
     content = models.TextField('CONTENT')
     # content = MDTextField()
     create_dt = models.DateTimeField('CREATE DATE', auto_now_add=True)
