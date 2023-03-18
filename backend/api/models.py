@@ -7,7 +7,6 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from taggit.models import TaggedItem
-from django_ckeditor_5.fields import CKEditor5Field
 
 class Post(models.Model):
     category = models.ForeignKey('Category', on_delete=models.SET_NULL, blank=True, null=True)
