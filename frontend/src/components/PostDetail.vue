@@ -20,7 +20,7 @@
     <v-row align="start" justify="center" >
       <v-col cols="12" sm="10" lg="10">
         <v-card class="pa-2" elevation="0">
-          <p class="mywrap" v-html="post.content"></p>
+            <div class="markdown-body" v-html="sanitizedContent"></div>
           <div class="mt-5">
             <strong class="text-disabled">TAGS:</strong>
             <v-chip
@@ -59,12 +59,19 @@
 <script>
 // import axios from "axios";
 import axios from "./index.js";
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import 'github-markdown-css';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css';
+// import githubMarkdownCss from 'generate-github-markdown-css';
 
 export default {
   data: () => ({
     post: {},
     prev: {},
     next: {},
+    markedContent: '',
   }),
 
   created() {
@@ -72,6 +79,25 @@ export default {
     const params = new URL(location).searchParams;
     const postId = params.get("id");
     this.fetchPostDetail(postId);
+  },
+  
+  computed: {
+    sanitizedContent() {
+      marked.setOptions({
+        // renderer: new marked.Renderer(),
+        gfm: true,
+        headerIds: false,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        smartLists: true,
+        smartypants: false,
+        highlight: function(code, lang) {
+          return lang !== '' ? hljs.highlight(lang, code).value : hljs.highlightAuto(code).value;
+        }
+      });
+      return DOMPurify.sanitize(marked(this.markedContent))
+    }
   },
 
   methods: {
@@ -82,6 +108,7 @@ export default {
         .then((res) => {
           console.log("POST DETAIL GET RES", res);
           this.post = res.data.post;
+          this.markedContent = this.post.content;
           this.prev = res.data.prevPost;
           this.next = res.data.nextPost;
         })

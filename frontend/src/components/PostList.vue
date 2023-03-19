@@ -100,6 +100,7 @@
           <v-pagination
           v-model="page"
           :length="pageCnt"
+          :total-visible="4"
           rounded="circle"
           @click.stop="pageChange(page)"
         >

@@ -16,7 +16,7 @@ from django.db.models import Count
 from .utils import make_tag_cloud, get_prev_next
 
 class PostPageNumberPagination(PageNumberPagination):
-    page_size = 2
+    page_size = 12
     # page_size_query_param = 'page_size'
     # max_page_size = 1000
     def get_paginated_response(self, data):
