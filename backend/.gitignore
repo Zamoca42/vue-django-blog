@@ -1,7 +1,7 @@
 #folders
 media/
 static/
-
+logs/
 #files
 secrets.json
 templates/blog/widget.html
