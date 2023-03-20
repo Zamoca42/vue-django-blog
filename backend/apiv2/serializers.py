@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Post, Category
+from apiv2.models import Post, Category
 from taggit.models import Tag
 from django.conf import settings
 

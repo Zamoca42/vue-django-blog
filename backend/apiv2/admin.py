@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Post, Category
+from apiv2.models import Post, Category
 from django.db import models
 from django import forms
 from mdeditor.widgets import MDEditorWidget

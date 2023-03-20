@@ -6,7 +6,7 @@ from apiv2.serializers import (
     )
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import PageNumberPagination
-from api.models import Post, Category
+from apiv2.models import Post, Category
 from taggit.models import Tag
 from rest_framework.response import Response
 from rest_framework.views import APIView
