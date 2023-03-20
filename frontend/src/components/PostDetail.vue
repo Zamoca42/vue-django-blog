@@ -75,7 +75,7 @@ export default {
   }),
 
   created() {
-    console.log("created()...");
+    // console.log("created()...");
     const params = new URL(location).searchParams;
     const postId = params.get("id");
     this.fetchPostDetail(postId);
@@ -93,7 +93,7 @@ export default {
         smartLists: true,
         smartypants: false,
         highlight: function(code, lang) {
-          return lang !== '' ? hljs.highlight(lang, code).value : hljs.highlightAuto(code).value;
+          return lang !== '' ? hljs.highlight(code, { language: lang }).value : hljs.highlightAll(code);
         }
       });
       return DOMPurify.sanitize(marked(this.markedContent))
@@ -102,11 +102,11 @@ export default {
 
   methods: {
     fetchPostDetail(postId) {
-      console.log("fetchPostDetail()...", postId);
+      // console.log("fetchPostDetail()...", postId);
       axios
         .get(`/api2/post/${postId}/`)
         .then((res) => {
-          console.log("POST DETAIL GET RES", res);
+          // console.log("POST DETAIL GET RES", res);
           this.post = res.data.post;
           this.markedContent = this.post.content;
           this.prev = res.data.prevPost;
@@ -119,7 +119,7 @@ export default {
     },
 
     serverPage(tagname) {
-      console.log("serverPage()...", tagname);
+      // console.log("serverPage()...", tagname);
       location.href = `/blog/post_list.html?tagname=${tagname}`;
     },
   },

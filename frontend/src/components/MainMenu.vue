@@ -131,11 +131,11 @@ export default {
 
   methods: {
     fetchTagCloud() {
-      console.log("fetchTagCloud()...");
+      // console.log("fetchTagCloud()...");
       axios
         .get("/api2/tag/cloud/")
         .then((res) => {
-          console.log("TAG CLOUD GET RES", res);
+          // console.log("TAG CLOUD GET RES", res);
           this.tagCloud = res.data.tagList;
           // tag.weight
           this.tagCloud.forEach((element) => {
@@ -158,7 +158,7 @@ export default {
     },
 
     serverPage(tagname) {
-      console.log("serverPage()...", tagname);
+      // console.log("serverPage()...", tagname);
       location.href = `/blog/post_list.html?tagname=${tagname}`;
     },
   },

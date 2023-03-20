@@ -145,7 +145,7 @@ export default {
     this.tagname = params.get("tagname");
     this.category = params.get("category");
     this.fetchPostList();
-    console.log("async.1 in created()...");
+    // console.log("async.1 in created()...");
   },
 
   mounted() {
@@ -155,7 +155,7 @@ export default {
 
   methods: {
     async fetchPostList(page = 1) {
-      console.log("fetchPostList()...", page, this.tagname, this.category);
+      // console.log("fetchPostList()...", page, this.tagname, this.category);
 
       let getUrl = "";
       if (this.tagname) getUrl = `/api2/post/?page=${page}&tagname=${this.tagname}`;
@@ -165,7 +165,7 @@ export default {
       axios
         .get(getUrl)
         .then((res) => {
-          console.log("FETCH POSTLIST GET RES", res);
+          // console.log("FETCH POSTLIST GET RES", res);
           this.postList = res.data.postList;
           this.pageCnt = res.data.pageCnt;
           this.curPage = res.data.curPage;
@@ -174,11 +174,11 @@ export default {
           console.log("POST LIST GET ERR.RESPONSE", err.response);
           alert(err.response.status + " " + err.response.statusText);
         });
-      console.log("async.2 in fetchPostList()...", this.user);
+      // console.log("async.2 in fetchPostList()...", this.user);
     },
 
     serverPage(item) {
-      console.log("serverPage()...", item);
+      // console.log("serverPage()...", item);
       location.href = `/blog/post_detail.html?id=${item}`;
     },
 
@@ -197,7 +197,7 @@ export default {
     // },
 
     categoryPage(category) {
-      console.log("serverPage()...", category);
+      // console.log("serverPage()...", category);
       location.href = `/blog/post_list.html?category=${category}`;
     },
 
