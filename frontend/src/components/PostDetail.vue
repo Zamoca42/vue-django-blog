@@ -1,9 +1,9 @@
 <template>
-  <v-container style="width:75%">
+  <v-container fluid style="width: 1100px">
     <v-row align="center" justify="center">
       <v-col cols="12" lg="10" class="mt-10 text-center">
-        <p class="mywrap text-h4">{{ post.title }}</p>
-        <p class="text-disabled">
+        <p class="mywrap text-h4 font-weight-bold">{{ post.title }}</p>
+        <p class="text-disabled mt-4">
           <span>{{ post.category }}</span>
           <span> | </span>
           <span>{{ post.modify_dt }}</span>
@@ -19,7 +19,7 @@
     </v-row>
     <v-row align="start" justify="center" >
       <v-col cols="12" sm="10" lg="10">
-        <v-card class="pa-2" elevation="0">
+        <v-card class="pa-2 mx-10" elevation="0">
             <div class="markdown-body" v-html="sanitizedContent"></div>
           <div class="mt-5">
             <strong class="text-disabled">TAGS:</strong>
