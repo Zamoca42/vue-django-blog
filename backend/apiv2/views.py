@@ -4,14 +4,15 @@ from apiv2.serializers import (
     PostSerializerDetail, 
     TagSerializer,
     )
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import PageNumberPagination
 from apiv2.models import Post, Category
 from taggit.models import Tag
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from collections import OrderedDict
-from django.views.generic.list import BaseListView
 from django.db.models import Count
 from .utils import make_tag_cloud, get_prev_next
 
@@ -26,10 +27,12 @@ class PostPageNumberPagination(PageNumberPagination):
           ('curPage', self.page.number),
       ]))
 
-class PostListAPIView(ListAPIView):
+class PostListAPIView(ModelViewSet):
+    # TODO: Create
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
     pagination_class = PostPageNumberPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         tagname = self.request.GET.get('tagname')
@@ -41,11 +44,18 @@ class PostListAPIView(ListAPIView):
         else:
             qs = Post.objects.all()
         return qs
+    
+    def get_actions(self):
+        actions = super().get_actions()
+        allowed_actions = ['list', 'create']
+        return {key: actions[key] for key in actions if key in allowed_actions}
 
 
-class PostRetrieveAPIView(RetrieveAPIView):
+class PostRetrieveAPIView(ModelViewSet):
+    # TODO: Retrieve. Update. Delete
     queryset = Post.objects.all()
     serializer_class = PostSerializerDetail
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -58,6 +68,10 @@ class PostRetrieveAPIView(RetrieveAPIView):
         serializer = self.get_serializer(instance=data)
         return Response(serializer.data)
     
+    def get_actions(self):
+        actions = super().get_actions()
+        allowed_actions = ['retrieve', 'update', 'partial_update', 'destroy']
+        return {key: actions[key] for key in actions if key in allowed_actions}
 
 # class CateTagAPIView(APIView):
 #     def get(self, request, *args, **kwargs):
