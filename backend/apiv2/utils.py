@@ -1,3 +1,7 @@
+import json
+import requests
+import logging
+
 def get_prev_next(instance):
     try:
         prev = instance.get_prev()
@@ -38,3 +42,18 @@ def make_tag_cloud(qsTag):
             'weight': weight,
         })
     return tagList
+
+def send_slack_message(message, webhook_url):
+    payload = {'text': message}
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(webhook_url, data=json.dumps(payload), headers=headers)
+    return response.status_code
+
+class SlackWebhookHandler(logging.Handler):
+    def __init__(self, webhook_url):
+        super().__init__()
+        self.webhook_url = webhook_url
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        send_slack_message(log_entry, self.webhook_url)

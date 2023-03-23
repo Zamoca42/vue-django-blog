@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import json
-from datetime import datetime
 import time
 from pathlib import Path
-from django.core.exceptions import ImproperlyConfigured
 import mysite.custom_storage
+from datetime import datetime
+from django.core.exceptions import ImproperlyConfigured
+from apiv2.utils import send_slack_message, SlackWebhookHandler
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -212,6 +213,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Logging
+SLACK_WEBHOOK_URL = get_secret("SLACK_WEBHOOK_URL")
 
 LOGGING = {
     'version': 1,
@@ -245,11 +247,6 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'django.server',
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
         'file': {
             'level': 'INFO',
             'filters': ['require_debug_false'],
@@ -259,11 +256,17 @@ LOGGING = {
             'backupCount': 5,
             'formatter': 'standard',
         },
+        'slack': {
+            'class': 'apiv2.utils.SlackWebhookHandler',
+            'webhook_url': SLACK_WEBHOOK_URL,
+            'level': 'INFO',
+            'formatter': 'standard',
+        },
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'mail_admins', 'file'],
-            'level': 'INFO',
+            'handlers': ['console', 'file', 'slack'],
+            'level': 'WARNING',
         },
         'django.server': {
             'handlers': ['django.server'],
