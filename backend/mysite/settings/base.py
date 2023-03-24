@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'mdeditor',
     'storages',
     'django_filters',
+    'axes',
     # base
     'django.contrib.admin',
     'django.contrib.auth',
@@ -74,6 +75,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # axes
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -283,3 +286,14 @@ LOGGING = {
         },
     }
 }
+
+AXES_FAILURE_LIMIT = 5  # Number of failed login attempts before lockout
+AXES_COOLOFF_TIME = 1  # Time in hours before a locked-out user can try again
+
+AUTHENTICATION_BACKENDS = [
+    # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesStandaloneBackend',
+
+    # Django ModelBackend is the default authentication backend.
+    'django.contrib.auth.backends.ModelBackend',
+]
