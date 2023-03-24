@@ -38,7 +38,6 @@ class PostListAPIView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
     pagination_class = PostPageNumberPagination
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     # permission_classes = [permissions.AllowAny] # only test
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = PostFilter
@@ -57,13 +56,11 @@ class PostListAPIView(generics.ListCreateAPIView):
 class PostRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostRetrieveSerializer #PostSerializerDetail
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     # permission_classes = [permissions.AllowAny] # only test
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        # prev_post, next_post = get_prev_next(instance)
         try:
             prev_post = instance.get_prev()
             prev_post_serializer = PostSerializerSub(prev_post)
