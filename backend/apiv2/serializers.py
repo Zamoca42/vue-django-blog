@@ -6,6 +6,11 @@ from django.conf import settings
 
 # Serializers define the API representation.
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name']
+
 class PostListSerializer(TaggitSerializer, serializers.ModelSerializer):
     category = serializers.CharField(source='category.name', default='New')
     # tag_names = serializers.SerializerMethodField()
@@ -86,15 +91,15 @@ class PostListSerializer(TaggitSerializer, serializers.ModelSerializer):
     #         return None
 
 class PostRetrieveSerializer(TaggitSerializer, serializers.ModelSerializer):
-    category = serializers.CharField(source='category.name', default='New')
-    tags = TagListSerializerField()
+    category = CategorySerializer() # serializers.CharField(source='category.name', default='New')
+    tags = serializers.StringRelatedField(many=True)
+    #tags = TagListSerializerField()
     modify_dt = serializers.DateTimeField(format='%B %d, %Y')
-    owner = serializers.StringRelatedField(read_only=True)
+    owner = serializers.StringRelatedField()
 
     class Meta:
         model = Post
         fields = '__all__'
-        partial = True
 
 class PostSerializerSub(serializers.ModelSerializer):
     class Meta:
