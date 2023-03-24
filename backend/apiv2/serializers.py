@@ -12,17 +12,17 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['name']
 
 class PostListSerializer(TaggitSerializer, serializers.ModelSerializer):
-    category = serializers.CharField(source='category.name', default='New')
+    category = CategorySerializer()
     # tag_names = serializers.SerializerMethodField()
     # tags = serializers.StringRelatedField(many=True, required=False)
-    tags = TagListSerializerField(required=False)
+    tags = serializers.StringRelatedField(many=True)
     # tags = TagListSerializerField(many=True)
-    modify_dt = serializers.DateTimeField(format='%B %d, %Y', read_only=True)
+    modify_dt = serializers.DateTimeField(format='%B %d, %Y')
     # image = serializers.SerializerMethodField()
 
     # def get_tag_names(self, obj):
     #     return [tag.name for tag in obj.tags.all()]
-    
+
     class Meta:
         model = Post
         fields = '__all__'
@@ -100,23 +100,51 @@ class PostRetrieveSerializer(TaggitSerializer, serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
+        read_only_fields = ['id', 'create_dt', 'modify_dt', 'owner']
+
+    def update(self, instance, validated_data):
+        category_data = validated_data.pop('category', None)
+
+        # Handle category update or creation
+        if category_data:
+            category_name = category_data['name']
+            category, created = Category.objects.get_or_create(name=category_name)
+            instance.category = category
+
+        # Update other fields
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+
+        instance.save()
+        return instance
+    
+    def to_representation(self, instance):
+       representation = super().to_representation(instance)
+    
+       request = self.context.get('request')
+    
+       # Remove the specified fields for GET requests
+       if request and request.method == 'GET':
+           fields_to_omit = ['description','create_dt','image']
+           for field in fields_to_omit:
+               representation.pop(field, None)
+       return representation
 
 class PostSerializerSub(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'title']
 
-class PostSerializerDetail(serializers.Serializer):
-    post = PostRetrieveSerializer()
-    prevPost = PostSerializerSub()
-    nextPost = PostSerializerSub()
-    # category = serializers.CharField(source='category.name')
+# class PostSerializerDetail(serializers.Serializer):
+#     post = PostRetrieveSerializer()
+#     prevPost = PostSerializerSub()
+#     nextPost = PostSerializerSub()
+#     # category = serializers.CharField(source='category.name')
 
-    class Meta:
-        model = Post
-        fields = '__all__'
-        fields = ['post', 'prevPost', 'nextPost']
-
+#     class Meta:
+#         model = Post
+#         # fields = '__all__'
+#         fields = ['post', 'prevPost', 'nextPost']
 
 class TagSerializer(serializers.Serializer):
     # cateList = serializers.ListField(child=serializers.CharField())
