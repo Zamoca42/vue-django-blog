@@ -1,21 +1,29 @@
 from apiv2.serializers import (
     PostListSerializer, 
     PostRetrieveSerializer, 
-    PostSerializerDetail, 
+    # PostSerializerDetail, 
     TagSerializer,
+    PostSerializerSub,
     )
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.pagination import PageNumberPagination
 from apiv2.models import Post, Category
 from taggit.models import Tag
+from rest_framework import pagination, views, generics, permissions, status
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from collections import OrderedDict
-from django.views.generic.list import BaseListView
 from django.db.models import Count
-from .utils import make_tag_cloud, get_prev_next
+from .utils import make_tag_cloud
+from django_filters import rest_framework as filters
+import django_filters
 
-class PostPageNumberPagination(PageNumberPagination):
+class PostFilter(django_filters.FilterSet):
+    category = django_filters.CharFilter(field_name='category__name')
+    tagname = django_filters.CharFilter(field_name='tags__name')
+
+    class Meta:
+        model = Post
+        fields = ['category', 'tagname']
+
+class PostPageNumberPagination(pagination.PageNumberPagination):
     page_size = 12
     # page_size_query_param = 'page_size'
     # max_page_size = 1000
@@ -26,53 +34,80 @@ class PostPageNumberPagination(PageNumberPagination):
           ('curPage', self.page.number),
       ]))
 
-class PostListAPIView(ListAPIView):
+class PostListAPIView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
     pagination_class = PostPageNumberPagination
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.AllowAny] # only test
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = PostFilter
 
-    def get_queryset(self):
-        tagname = self.request.GET.get('tagname')
-        category = self.request.GET.get('category')
-        if tagname:
-            qs = Post.objects.filter(tags__name=tagname)
-        elif category:
-            qs = Post.objects.filter(category__name=category)
-        else:
-            qs = Post.objects.all()
-        return qs
+    # def get_queryset(self):
+    #     tagname = self.request.GET.get('tagname')
+    #     category = self.request.GET.get('category')
+    #     if tagname:
+    #         qs = Post.objects.filter(tags__name=tagname)
+    #     elif category:
+    #         qs = Post.objects.filter(category__name=category)
+    #     else:
+    #         qs = Post.objects.all()
+    #     return qs
 
-
-class PostRetrieveAPIView(RetrieveAPIView):
+class PostRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerializerDetail
+    serializer_class = PostRetrieveSerializer #PostSerializerDetail
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.AllowAny] # only test
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        prevInstance, nextInstance = get_prev_next(instance)
-        data = {
-            'post': instance,
-            'prevPost': prevInstance,
-            'nextPost': nextInstance,
-        }
-        serializer = self.get_serializer(instance=data)
-        return Response(serializer.data)
+        serializer = self.get_serializer(instance)
+        # prev_post, next_post = get_prev_next(instance)
+        try:
+            prev_post = instance.get_prev()
+            prev_post_serializer = PostSerializerSub(prev_post)
+        except Post.DoesNotExist:
+            prev_post_serializer = None
+
+        try:
+            next_post = instance.get_next()
+            next_post_serializer = PostSerializerSub(next_post)
+        except Post.DoesNotExist:
+            next_post_serializer = None
+        
+        # post_serializer = PostRetrieveSerializer(instance)
+        # prev_post_serializer = PostSerializerSub(prev_post)
+        # next_post_serializer = PostSerializerSub(next_post)
+
+        return Response({
+            'post': serializer.data,
+            'prevPost': prev_post_serializer.data if prev_post_serializer else None,
+            'nextPost': next_post_serializer.data if next_post_serializer else None,
+        })
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     prevInstance, nextInstance = get_prev_next(instance)
+    #     data = {
+    #         'post': instance,
+    #         'prevPost': prevInstance,
+    #         'nextPost': nextInstance,
+    #     }
+    #     serializer = PostSerializerDetail(instance=data) # self.get_serializer(instance=data)
+    #     return Response(serializer.data)
+    
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    # Check Owner
+    def check_object_permissions(self, request, obj):
+        super().check_object_permissions(request, obj)
+        if request.method in ['PUT', 'PATCH', 'DELETE'] and request.user != obj.owner:
+            self.permission_denied(request)
     
 
-# class CateTagAPIView(APIView):
-#     def get(self, request, *args, **kwargs):
-#         # cateList = Category.objects.all()
-#         qs = Tag.objects.annotate(count=Count('post'))
-#         tagList = make_tag_cloud(qs)
-#         data = {
-#             # 'cateList': cateList,
-#             'tagList': tagList,
-#         }
-
-#         serializer = CateTagSerializer(instance=data)
-#         return Response(serializer.data)
-
-class TagCloudAPIView(APIView):
+class TagCloudAPIView(views.APIView):
     def get(self, request, *args, **kwargs):
         qs = Tag.objects.annotate(count=Count('post'))
         tagList = make_tag_cloud(qs)

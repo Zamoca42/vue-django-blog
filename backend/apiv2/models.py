@@ -3,7 +3,6 @@ from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from pathlib import Path
-from ckeditor_uploader.fields import RichTextUploadingField
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from taggit.models import TaggedItem
@@ -19,7 +18,7 @@ class Post(models.Model):
     create_dt = models.DateTimeField('CREATE DATE', auto_now_add=True)
     modify_dt = models.DateTimeField('MODIFY DATE', auto_now=True)
     tags = TaggableManager(blank=True)
-    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='OWNER',default='zamoca')
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='OWNER')
     # like = models.PositiveSmallIntegerField('LIKE', default=0)
 
     class Meta:
