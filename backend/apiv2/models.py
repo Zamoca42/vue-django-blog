@@ -3,7 +3,6 @@ from django.db import models
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from pathlib import Path
-from ckeditor_uploader.fields import RichTextUploadingField
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from taggit.models import TaggedItem

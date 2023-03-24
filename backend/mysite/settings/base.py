@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'mdeditor',
     'storages',
+    'django_filters',
     # base
     'django.contrib.admin',
     'django.contrib.auth',
@@ -190,9 +191,13 @@ MDEDITOR_CONFIGS = {
 }
 
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',]
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+}
 
 # TAGGIT_CASE_INSENSITIVE = True
 

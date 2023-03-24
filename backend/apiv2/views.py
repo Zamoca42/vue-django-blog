@@ -12,6 +12,16 @@ from rest_framework.response import Response
 from collections import OrderedDict
 from django.db.models import Count
 from .utils import make_tag_cloud
+from django_filters import rest_framework as filters
+import django_filters
+
+class PostFilter(django_filters.FilterSet):
+    category = django_filters.CharFilter(field_name='category__name')
+    tagname = django_filters.CharFilter(field_name='tags__name')
+
+    class Meta:
+        model = Post
+        fields = ['category', 'tagname']
 
 class PostPageNumberPagination(pagination.PageNumberPagination):
     page_size = 12
@@ -30,17 +40,19 @@ class PostListAPIView(generics.ListCreateAPIView):
     pagination_class = PostPageNumberPagination
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     # permission_classes = [permissions.AllowAny] # only test
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = PostFilter
 
-    def get_queryset(self):
-        tagname = self.request.GET.get('tagname')
-        category = self.request.GET.get('category')
-        if tagname:
-            qs = Post.objects.filter(tags__name=tagname)
-        elif category:
-            qs = Post.objects.filter(category__name=category)
-        else:
-            qs = Post.objects.all()
-        return qs
+    # def get_queryset(self):
+    #     tagname = self.request.GET.get('tagname')
+    #     category = self.request.GET.get('category')
+    #     if tagname:
+    #         qs = Post.objects.filter(tags__name=tagname)
+    #     elif category:
+    #         qs = Post.objects.filter(category__name=category)
+    #     else:
+    #         qs = Post.objects.all()
+    #     return qs
 
 class PostRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
