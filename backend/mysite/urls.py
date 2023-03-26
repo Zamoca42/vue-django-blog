@@ -18,6 +18,7 @@ from django.urls import path, include, re_path
 # from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+from mysite.views import robots_txt
 # from markdownx.views import ImageUploadView,MarkdownifyView
 # from api.views_util import markdown_uploader
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('api2/', include('apiv2.urls')),
     # path('ckeditor/', include('ckeditor_uploader.urls')),
     re_path(r'mdeditor/', include('mdeditor.urls')),
+    path("robots.txt", robots_txt),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
