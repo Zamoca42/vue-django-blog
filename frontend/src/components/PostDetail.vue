@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="width: 1100px">
+  <v-container fluid style="width: 1100px;">
     <v-row align="center" justify="center">
       <v-col cols="12" lg="10" class="mt-10 text-center">
         <p class="mywrap text-h4 font-weight-bold">{{ post.title }}</p>
@@ -61,10 +61,9 @@
 import axios from "./index.js";
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import 'github-markdown-css';
+import 'github-markdown-css/github-markdown-light.css'
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
-// import githubMarkdownCss from 'generate-github-markdown-css';
 
 export default {
   data: () => ({
@@ -136,4 +135,5 @@ export default {
   overflow: hidden;
   white-space: nowrap;
 }
+
 </style>
