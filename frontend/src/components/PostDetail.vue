@@ -136,4 +136,10 @@ export default {
   white-space: nowrap;
 }
 
+.markdown-body {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #212529;
+  font-family: "Pretendard";
+}
 </style>

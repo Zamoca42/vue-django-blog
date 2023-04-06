@@ -1,0 +1,10 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css');
+
+body .v-application, 
+body .v-application span,
+body .v-application a, 
+body .v-application p, 
+body .v-application div,
+body .v-application h1 {
+    font-family: 'Pretendard' !important;
+  }
