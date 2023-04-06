@@ -124,7 +124,6 @@ export default {
   data: () => ({
     postList: [],
     cateList: [
-      { text: "New" },
       { text: "Log" },
       { text: "Project" },
       { text: "Review" },
