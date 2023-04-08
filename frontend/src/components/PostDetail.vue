@@ -18,9 +18,9 @@
       </v-col>
     </v-row>
     <v-row align="start" justify="center" >
-      <v-col cols="12" sm="10" lg="10">
-        <v-card class="pa-2 mx-10" elevation="0">
-            <div class="markdown-body" v-html="sanitizedContent"></div>
+      <v-col cols="12" sm="12" md="10" lg="10">
+        <v-card class="pa-2" elevation="0" >
+          <div class="markdown-body" v-html="sanitizedContent"></div>
           <div class="mt-5">
             <strong class="text-disabled">TAGS:</strong>
             <v-chip
@@ -134,12 +134,5 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
-
-.markdown-body {
-  font-size: 18px;
-  line-height: 1.7;
-  color: #212529;
-  font-family: "Pretendard";
 }
 </style>

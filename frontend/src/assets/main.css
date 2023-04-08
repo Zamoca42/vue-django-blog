@@ -7,4 +7,35 @@ body .v-application p,
 body .v-application div,
 body .v-application h1 {
     font-family: 'Pretendard' !important;
+    letter-spacing: -0.001rem;
   }
+
+  body .v-application h2 {
+    margin-top: 48px;
+  }
+
+.markdown-body {
+  line-height: 1.7;
+  color: #212529;
+}
+
+@media (max-width: 1200px) {
+  .markdown-body {
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
+
+@media (max-width: 800px) {
+  .markdown-body {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .markdown-body {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
