@@ -12,7 +12,6 @@
 <script>
 import MainMenu from '@/components/MainMenu.vue';
 import Information from '@/components/Information.vue';
-// import MyFooter from '@/components/MyFooter.vue';
 
 export default {
   components: { MainMenu, Information},

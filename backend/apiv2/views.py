@@ -1,7 +1,6 @@
 from apiv2.serializers import (
     PostListSerializer, 
     PostRetrieveSerializer, 
-    # PostSerializerDetail, 
     TagSerializer,
     PostSerializerSub,
     )
@@ -25,8 +24,7 @@ class PostFilter(django_filters.FilterSet):
 
 class PostPageNumberPagination(pagination.PageNumberPagination):
     page_size = 12
-    # page_size_query_param = 'page_size'
-    # max_page_size = 1000
+  
     def get_paginated_response(self, data):
       return Response(OrderedDict([
           ('postList', data),
@@ -42,20 +40,9 @@ class PostListAPIView(generics.ListCreateAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = PostFilter
 
-    # def get_queryset(self):
-    #     tagname = self.request.GET.get('tagname')
-    #     category = self.request.GET.get('category')
-    #     if tagname:
-    #         qs = Post.objects.filter(tags__name=tagname)
-    #     elif category:
-    #         qs = Post.objects.filter(category__name=category)
-    #     else:
-    #         qs = Post.objects.all()
-    #     return qs
-
 class PostRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostRetrieveSerializer #PostSerializerDetail
+    serializer_class = PostRetrieveSerializer
     # permission_classes = [permissions.AllowAny] # only test
 
     def retrieve(self, request, *args, **kwargs):
@@ -72,32 +59,16 @@ class PostRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
             next_post_serializer = PostSerializerSub(next_post)
         except Post.DoesNotExist:
             next_post_serializer = None
-        
-        # post_serializer = PostRetrieveSerializer(instance)
-        # prev_post_serializer = PostSerializerSub(prev_post)
-        # next_post_serializer = PostSerializerSub(next_post)
 
         return Response({
             'post': serializer.data,
             'prevPost': prev_post_serializer.data if prev_post_serializer else None,
             'nextPost': next_post_serializer.data if next_post_serializer else None,
         })
-
-    # def retrieve(self, request, *args, **kwargs):
-    #     instance = self.get_object()
-    #     prevInstance, nextInstance = get_prev_next(instance)
-    #     data = {
-    #         'post': instance,
-    #         'prevPost': prevInstance,
-    #         'nextPost': nextInstance,
-    #     }
-    #     serializer = PostSerializerDetail(instance=data) # self.get_serializer(instance=data)
-    #     return Response(serializer.data)
     
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
 
-    # Check Owner
     def check_object_permissions(self, request, obj):
         super().check_object_permissions(request, obj)
         if request.method in ['PUT', 'PATCH', 'DELETE'] and request.user != obj.owner:

@@ -72,7 +72,6 @@
     :rail-width="railwidth"
   >
     <v-list density="compact">
-      <!-- <v-list-subheader>menu</v-list-subheader> -->
       <v-list-item
         class="justify-center"
         v-for="(item, i) in items"
@@ -82,7 +81,6 @@
         active-color="primary"
       >
         <template v-slot:prepend>
-          <!-- <v-icon :icon="item.icon"></v-icon> -->
         </template>
 
         <v-list-item-title v-text="item.text"></v-list-item-title>
@@ -92,8 +90,6 @@
 </template>
 
 <script>
-// import axios from "axios";
-// import { user } from "./globals.js";
 import axios from "./index.js";
 
 axios.defaults.xsrfCookieName = "csrftoken";
@@ -101,7 +97,6 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 export default {
   setup() {
-    // return { user };
   },
 
   data: () => ({
@@ -121,23 +116,17 @@ export default {
   },
 
   created() {
-    // console.log("created(MainMenu.vue)...");
-    // this.fetchTagCloud();
   },
 
   mounted() {
-    // console.log("mounted()...");
   },
 
   methods: {
     fetchTagCloud() {
-      // console.log("fetchTagCloud()...");
       axios
         .get("/api2/tag/cloud/")
         .then((res) => {
-          // console.log("TAG CLOUD GET RES", res);
           this.tagCloud = res.data.tagList;
-          // tag.weight
           this.tagCloud.forEach((element) => {
             if (element.weight === 3) {
               element.chipColor = "green-accent-4";
@@ -158,7 +147,6 @@ export default {
     },
 
     serverPage(tagname) {
-      // console.log("serverPage()...", tagname);
       location.href = `/blog/post_list.html?tagname=${tagname}`;
     },
   },

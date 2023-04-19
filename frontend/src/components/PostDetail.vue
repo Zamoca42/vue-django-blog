@@ -6,7 +6,7 @@
         <p class="text-disabled mt-4">
           <span>{{ post.category }}</span>
           <span> | </span>
-          <span>{{ post.modify_dt }}</span>
+          <span>{{ post.create_dt }}</span>
           <span> | </span>
           <a
             class="text-disabled text-decoration-none"
@@ -21,7 +21,11 @@
       <v-col cols="12" sm="12" md="10" lg="10">
         <v-card class="pa-2" elevation="0" >
           <div class="markdown-body" v-html="sanitizedContent"></div>
-          <div class="mt-5">
+          
+          <div class="mt-5">  
+            <div>
+              <strong class="text-disabled">Last Modified at {{ post.modify_dt }}</strong>
+            </div>
             <strong class="text-disabled">TAGS:</strong>
             <v-chip
               class="ma-2 text-disabled"
@@ -57,7 +61,6 @@
 </template>
 
 <script>
-// import axios from "axios";
 import axios from "./index.js";
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
@@ -74,7 +77,6 @@ export default {
   }),
 
   created() {
-    // console.log("created()...");
     const params = new URL(location).searchParams;
     const postId = params.get("id");
     this.fetchPostDetail(postId);
@@ -83,7 +85,6 @@ export default {
   computed: {
     sanitizedContent() {
       marked.setOptions({
-        // renderer: new marked.Renderer(),
         gfm: true,
         headerIds: false,
         tables: true,
@@ -101,11 +102,9 @@ export default {
 
   methods: {
     fetchPostDetail(postId) {
-      // console.log("fetchPostDetail()...", postId);
       axios
         .get(`/api2/post/${postId}/`)
         .then((res) => {
-          // console.log("POST DETAIL GET RES", res);
           this.post = res.data.post;
           this.markedContent = this.post.content;
           this.prev = res.data.prevPost;
@@ -118,7 +117,6 @@ export default {
     },
 
     serverPage(tagname) {
-      // console.log("serverPage()...", tagname);
       location.href = `/blog/post_list.html?tagname=${tagname}`;
     },
   },
@@ -134,5 +132,9 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+.markdown-body {
+  line-height: 1.7;
+  color: #212529;
 }
 </style>
