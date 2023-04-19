@@ -135,4 +135,8 @@ export default {
   overflow: hidden;
   white-space: nowrap;
 }
+.markdown-body {
+  line-height: 1.7;
+  color: #212529;
+}
 </style>
