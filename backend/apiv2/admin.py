@@ -7,6 +7,7 @@ from mdeditor.widgets import MDEditorWidget
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'category', 'title', 'image', 'modify_dt',)
+    list_display_links = ('id', 'title',)
     formfield_overrides = {
         models.TextField: {'widget': MDEditorWidget}
     }

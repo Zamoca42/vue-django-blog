@@ -109,6 +109,10 @@ export default {
           this.markedContent = this.post.content;
           this.prev = res.data.prevPost;
           this.next = res.data.nextPost;
+
+          this.$nextTick(() => {
+          window.scrollTo(0, 0); // Scroll to the top of the page
+          });
         })
         .catch((err) => {
           console.log("POST DETAIL GET ERR.RESPONSE", err.response);
