@@ -6,7 +6,7 @@
         <p class="text-disabled mt-4">
           <span>{{ post.category }}</span>
           <span> | </span>
-          <span>{{ post.modify_dt }}</span>
+          <span>{{ post.create_dt }}</span>
           <span> | </span>
           <a
             class="text-disabled text-decoration-none"
@@ -21,7 +21,11 @@
       <v-col cols="12" sm="12" md="10" lg="10">
         <v-card class="pa-2" elevation="0" >
           <div class="markdown-body" v-html="sanitizedContent"></div>
-          <div class="mt-5">
+          
+          <div class="mt-5">  
+            <div>
+              <strong class="text-disabled">Last Modified at {{ post.modify_dt }}</strong>
+            </div>
             <strong class="text-disabled">TAGS:</strong>
             <v-chip
               class="ma-2 text-disabled"

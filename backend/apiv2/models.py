@@ -19,7 +19,7 @@ class Post(models.Model):
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='OWNER')
 
     class Meta:
-        ordering = ('-modify_dt',)
+        ordering = ('-create_dt',)
 
     def __str__(self):
         return self.title
@@ -28,10 +28,10 @@ class Post(models.Model):
         return reverse('blog:post_detail', args=(self.id))
     
     def get_prev(self):
-        return self.get_previous_by_modify_dt()
+        return self.get_previous_by_create_dt()
     
     def get_next(self):
-        return self.get_next_by_modify_dt()
+        return self.get_next_by_create_dt()
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)

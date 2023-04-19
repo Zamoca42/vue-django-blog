@@ -9,7 +9,7 @@ from django.conf import settings
 class PostListSerializer(TaggitSerializer, serializers.ModelSerializer):
     category = serializers.CharField(source='category.name', default='New')
     tags = TagListSerializerField()
-    modify_dt = serializers.DateTimeField(format='%B %d, %Y')
+    create_dt = serializers.DateTimeField(format='%B %d, %Y')
 
 
     class Meta:
@@ -32,7 +32,7 @@ class PostListSerializer(TaggitSerializer, serializers.ModelSerializer):
        request = self.context.get('request')
     
        if request and request.method == 'GET':
-           fields_to_omit = ['content', 'owner','create_dt']
+           fields_to_omit = ['content', 'owner','modify_dt']
            for field in fields_to_omit:
                representation.pop(field, None)
        return representation
@@ -41,6 +41,7 @@ class PostRetrieveSerializer(TaggitSerializer, serializers.ModelSerializer):
     category = serializers.CharField(source='category.name', default='New')
     tags = TagListSerializerField()
     modify_dt = serializers.DateTimeField(format='%B %d, %Y')
+    create_dt = serializers.DateTimeField(format='%B %d, %Y')
     owner = serializers.StringRelatedField()
 
     class Meta:
@@ -68,7 +69,7 @@ class PostRetrieveSerializer(TaggitSerializer, serializers.ModelSerializer):
        request = self.context.get('request')
     
        if request and request.method == 'GET':
-           fields_to_omit = ['description','create_dt','image']
+           fields_to_omit = ['description','image']
            for field in fields_to_omit:
                representation.pop(field, None)
        return representation

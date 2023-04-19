@@ -68,7 +68,7 @@
           <v-card-text>
             <v-row>
               <v-col sm="10" cols="12" class="text-sm-left text-center">
-                <p class="text-caption text-disabled">{{ post.modify_dt }}</p>
+                <p class="text-caption text-disabled">{{ post.create_dt }}</p>
                 <p class="text-body-1 mywrap" v-html="post.title"></p>
                 <div
                   class="mt-3 text-body-2 text-disabled mb-3 mywrap"

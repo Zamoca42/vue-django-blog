@@ -30,7 +30,6 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 INSTALLED_APPS = [
     # app
-    'api',
     'accounts',
     'apiv2',
     # 3rd-party
