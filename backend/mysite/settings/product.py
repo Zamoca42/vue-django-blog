@@ -1,9 +1,6 @@
 import os
 from .base import *
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -12,11 +9,6 @@ ALLOWED_HOSTS = [
 
 STATIC_ROOT = BASE_DIR / 'static/'
 STATICFILES_DIRS = []
-
-# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     'default': {

@@ -8,30 +8,21 @@ from django.conf import settings
 
 class PostListSerializer(TaggitSerializer, serializers.ModelSerializer):
     category = serializers.CharField(source='category.name', default='New')
-    # tag_names = serializers.SerializerMethodField()
-    # tags = serializers.StringRelatedField(many=True, required=False)
-    # tags = serializers.StringRelatedField(many=True)
     tags = TagListSerializerField()
     modify_dt = serializers.DateTimeField(format='%B %d, %Y')
-    # image = serializers.SerializerMethodField()
 
-    # def get_tag_names(self, obj):
-    #     return [tag.name for tag in obj.tags.all()]
 
     class Meta:
         model = Post
         fields = '__all__'
-        # exclude = ['create_dt', 'content', 'owner']
 
     def create(self, validated_data):
         category_name = validated_data.pop('category')['name']
         category, _ = Category.objects.get_or_create(name=category_name)
         
-        # Extract and remove tags from validated_data
         tags = validated_data.pop('tags', [])
         instance = super().create(validated_data)
         instance.tags.set(*tags)
-        # post = Post.objects.create(category=category, **validated_data)
 
         return instance
 
@@ -40,54 +31,14 @@ class PostListSerializer(TaggitSerializer, serializers.ModelSerializer):
     
        request = self.context.get('request')
     
-       # Remove the specified fields for GET requests
        if request and request.method == 'GET':
            fields_to_omit = ['content', 'owner','create_dt']
            for field in fields_to_omit:
                representation.pop(field, None)
        return representation
 
-    # def to_representation(self, instance):
-    #     representation = super().to_representation(instance)
-    #     request = self.context.get('request')
-    #     if request is not None:
-    #         image_url = representation.get('image')
-    #         representation['image'] = request.build_absolute_uri(image_url)
-    #     else:
-    #         representation['image'] = null
-    #     return representation
-
-    # def get_image(self, obj):
-    #     if obj.image:
-    #         request = self.context.get('request')
-    #         server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
-    #         return 'http://{}/{}'.format(server_url, obj.image.url)
-    #     else:
-    #         return None
-    
-    # def get_image(self, obj):
-    #     if obj.image:
-    #         request = self.context.get('request')
-    #         server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
-    #         protocol = 'https' if request.is_secure() else 'http'
-    #         return f"{protocol}://{server_url}{obj.image.url}"
-    #     else:
-    #         return None
-    
-    # def get_image(self, obj):
-    #     if obj.image:
-    #         request = self.context.get('request')
-    #         server_url = request.META.get('HTTP_HOST', settings.SERVER_URL)
-    #         if request.is_secure():
-    #             return f'https://{server_url}{obj.image.url}'
-    #         else:
-    #             return f'http://{server_url}{obj.image.url}'
-    #     else:
-    #         return None
-
 class PostRetrieveSerializer(TaggitSerializer, serializers.ModelSerializer):
     category = serializers.CharField(source='category.name', default='New')
-    # tags = serializers.StringRelatedField(many=True)
     tags = TagListSerializerField()
     modify_dt = serializers.DateTimeField(format='%B %d, %Y')
     owner = serializers.StringRelatedField()
@@ -100,13 +51,11 @@ class PostRetrieveSerializer(TaggitSerializer, serializers.ModelSerializer):
     def update(self, instance, validated_data):
         category_data = validated_data.pop('category', None)
 
-        # Handle category update or creation
         if category_data:
             category_name = category_data['name']
             category, created = Category.objects.get_or_create(name=category_name)
             instance.category = category
 
-        # Update other fields
         for field, value in validated_data.items():
             setattr(instance, field, value)
 
@@ -118,7 +67,6 @@ class PostRetrieveSerializer(TaggitSerializer, serializers.ModelSerializer):
     
        request = self.context.get('request')
     
-       # Remove the specified fields for GET requests
        if request and request.method == 'GET':
            fields_to_omit = ['description','create_dt','image']
            for field in fields_to_omit:
@@ -130,17 +78,5 @@ class PostSerializerSub(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'title']
 
-# class PostSerializerDetail(serializers.Serializer):
-#     post = PostRetrieveSerializer()
-#     prevPost = PostSerializerSub()
-#     nextPost = PostSerializerSub()
-#     # category = serializers.CharField(source='category.name')
-
-#     class Meta:
-#         model = Post
-#         # fields = '__all__'
-#         fields = ['post', 'prevPost', 'nextPost']
-
 class TagSerializer(serializers.Serializer):
-    # cateList = serializers.ListField(child=serializers.CharField())
     tagList = serializers.ListField(child=serializers.DictField())
