@@ -4,7 +4,6 @@
       <v-col cols="12" lg="10" align="center" class="mt-10">
         <a class="text-h3 text-high-emphasis text-decoration-none" href="/">Post</a>
       </v-col>
-      <!-- category -->
       <v-col cols="12" lg="12" align="center">
         <v-btn
           variant="text"
@@ -16,7 +15,6 @@
         </v-btn>
       </v-col>
     </v-row>
-    <!-- category or tag -->
     <template v-if="tagname">
       <p class="mb-2 text-subtitle-2">
         <span>Tag: </span>
@@ -36,7 +34,6 @@
     <template v-else>
       <div class="mb-2"></div>
     </template>
-    <!-- PostList -->
     <v-row cols="12" lg="10">
       <v-col
         v-for="post in postList"
@@ -93,7 +90,6 @@
     </v-row>
     <v-row align="center" justify="center">
       <div class="text-center">
-        <!-- Pagination -->
         <template v-if="pageCnt === 1">
         </template>
         <template v-else>
@@ -112,13 +108,10 @@
 </template>
 
 <script>
-// import axios from "axios";
-// import { user } from "./globals.js";
 import axios from "./index.js";
 
 export default {
   setup() {
-    // return { user };
   },
 
   data: () => ({
@@ -139,22 +132,17 @@ export default {
   computed: {},
 
   created() {
-    // console.log("created(PostList.vue)...", this.user);
     const params = new URL(location).searchParams;
     this.tagname = params.get("tagname");
     this.category = params.get("category");
     this.fetchPostList();
-    // console.log("async.1 in created()...");
   },
 
   mounted() {
-    // console.log("mounted(PostList.vue)...", this.user);
-    // this.fetchCateList();
   },
 
   methods: {
     async fetchPostList(page = 1) {
-      // console.log("fetchPostList()...", page, this.tagname, this.category);
 
       let getUrl = "";
       if (this.tagname) getUrl = `/api2/post/?page=${page}&tagname=${this.tagname}`;
@@ -164,7 +152,6 @@ export default {
       axios
         .get(getUrl)
         .then((res) => {
-          // console.log("FETCH POSTLIST GET RES", res);
           this.postList = res.data.postList;
           this.pageCnt = res.data.pageCnt;
           this.curPage = res.data.curPage;
@@ -173,35 +160,17 @@ export default {
           console.log("POST LIST GET ERR.RESPONSE", err.response);
           alert(err.response.status + " " + err.response.statusText);
         });
-      // console.log("async.2 in fetchPostList()...", this.user);
     },
 
     serverPage(item) {
-      // console.log("serverPage()...", item);
       location.href = `/blog/post_detail.html?id=${item}`;
     },
 
-    // async fetchCateList() {
-    //   console.log("fetchCateList()...");
-    //   axios
-    //     .get("/api2/category/")
-    //     .then((res) => {
-    //       console.log("CATEGORY GET RES", res);
-    //       this.cateList = res.data.cateList;
-    //     })
-    //     .catch((err) => {
-    //       console.log("CATEGORY GET ERR.RESPONSE", err.response);
-    //       alert(err.response.status + " " + err.response.statusText);
-    //     });
-    // },
-
     categoryPage(category) {
-      // console.log("serverPage()...", category);
       location.href = `/blog/post_list.html?category=${category}`;
     },
 
     pageChange(page) {
-      // console.log("pageChanged()...", page);
       if (this.curPage === page) return
       else {
         this.curPage = page;

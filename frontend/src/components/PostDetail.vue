@@ -57,7 +57,6 @@
 </template>
 
 <script>
-// import axios from "axios";
 import axios from "./index.js";
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
@@ -74,7 +73,6 @@ export default {
   }),
 
   created() {
-    // console.log("created()...");
     const params = new URL(location).searchParams;
     const postId = params.get("id");
     this.fetchPostDetail(postId);
@@ -83,7 +81,6 @@ export default {
   computed: {
     sanitizedContent() {
       marked.setOptions({
-        // renderer: new marked.Renderer(),
         gfm: true,
         headerIds: false,
         tables: true,
@@ -101,11 +98,9 @@ export default {
 
   methods: {
     fetchPostDetail(postId) {
-      // console.log("fetchPostDetail()...", postId);
       axios
         .get(`/api2/post/${postId}/`)
         .then((res) => {
-          // console.log("POST DETAIL GET RES", res);
           this.post = res.data.post;
           this.markedContent = this.post.content;
           this.prev = res.data.prevPost;
@@ -118,7 +113,6 @@ export default {
     },
 
     serverPage(tagname) {
-      // console.log("serverPage()...", tagname);
       location.href = `/blog/post_list.html?tagname=${tagname}`;
     },
   },
