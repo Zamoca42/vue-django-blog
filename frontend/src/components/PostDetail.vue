@@ -65,8 +65,20 @@ import axios from "./index.js";
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import 'github-markdown-css/github-markdown-light.css'
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import python from 'highlight.js/lib/languages/python';
+import plaintext from 'highlight.js/lib/languages/plaintext';
+import bash from 'highlight.js/lib/languages/bash';
+import json from 'highlight.js/lib/languages/json';
 import 'highlight.js/styles/github.css';
+
+
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('python', python);
+hljs.registerLanguage('plaintext', plaintext);
+hljs.registerLanguage('json', json);
+hljs.registerLanguage('bash', bash);
 
 export default {
   data: () => ({
@@ -93,7 +105,11 @@ export default {
         smartLists: true,
         smartypants: false,
         highlight: function(code, lang) {
-          return lang !== '' ? hljs.highlight(code, { language: lang }).value : hljs.highlightAll(code);
+          if (lang && hljs.getLanguage(lang)) {
+            return hljs.highlight(code, { language: lang }).value;
+          } else {
+            return hljs.highlight(code, { language: 'plaintext' }).value;
+          }
         }
       });
       return DOMPurify.sanitize(marked(this.markedContent))
