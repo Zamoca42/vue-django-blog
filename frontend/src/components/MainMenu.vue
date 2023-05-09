@@ -1,4 +1,5 @@
 <template>
+  <v-app>
   <v-app-bar color="white" density="compact" class="justify-space-between">
     <p class="ma-1 pa-1 me-auto text-button d-flex">
         <span>zamoca</span>
@@ -17,7 +18,7 @@
         v-for="(item, i) in items"
         :key="i"
         :value="item"
-        :href="item.href"
+        :to="item.href"
       >
         {{ item.text }}
       </v-btn>
@@ -77,7 +78,7 @@
         v-for="(item, i) in items"
         :key="i"
         :value="item"
-        :href="item.href"
+        :to="item.href"
         active-color="primary"
       >
         <template v-slot:prepend>
@@ -87,6 +88,7 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
+</v-app>
 </template>
 
 <script>
@@ -104,8 +106,8 @@ export default {
     dialog: false,
     tagCloud: [],
     items: [
-      { text: "Info", href: "/Info.html" },
-      { text: "Blog", href: "/blog/post_list.html" },
+      { text: "Info", href: "/info" },
+      { text: "Blog", href: "/" },
     ],
   }),
 

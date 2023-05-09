@@ -3,9 +3,8 @@ import 'vuetify/styles'
 import '@/assets/main.css';
 
 import { createVuetify } from 'vuetify'
-import { VDataTable } from 'vuetify/labs/VDataTable'
 
-export default createVuetify({
+const vuetify = createVuetify({
   theme: {
     themes: {
       light: {
@@ -16,9 +15,6 @@ export default createVuetify({
       },
     },
   },
-
-  components: {
-    VDataTable,
-  }, 
-
 })
+
+export default vuetify;

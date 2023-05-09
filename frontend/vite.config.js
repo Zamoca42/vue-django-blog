@@ -45,7 +45,7 @@ export default defineConfig({
     }      
   },
 
-  root: resolve(__dirname, 'src', 'pages'),
+  root: resolve(__dirname, 'src'),
   publicDir: resolve(__dirname, 'public'),
   
   build: {
@@ -57,11 +57,11 @@ export default defineConfig({
         visualizer(),
       ],
       input: {
-        main: resolve(__dirname, 'src', 'pages', 'index.html'),
-        list: resolve(__dirname, 'src', 'pages', 'blog', 'post_list.html'),
-        detail: resolve(__dirname, 'src', 'pages', 'blog', 'post_detail.html'),
-        info: resolve(__dirname, 'src', 'pages', 'Info.html'),
-        error: resolve(__dirname, 'src', 'pages', 'error.html')
+        main: resolve(__dirname, 'src', 'index.html'),
+        // list: resolve(__dirname, 'src', 'pages', 'blog', 'post_list.html'),
+        // detail: resolve(__dirname, 'src', 'pages', 'blog', 'post_detail.html'),
+        // info: resolve(__dirname, 'src', 'pages', 'Info.html'),
+        // error: resolve(__dirname, 'src', 'pages', 'error.html')
       }
     }
   },
