@@ -89,17 +89,45 @@ export default {
     markedContent: '',
   }),
 
-  created() {
-    const postId = this.$route.params.id;
-    this.fetchPostDetail(postId);
+  beforeRouteEnter(to, from, next) {
+    axios
+      .get(`/api2/post/${to.params.id}/`)
+      .then((res) => {
+        next(vm => {
+          vm.post = res.data.post;
+          vm.markedContent = vm.post.content;
+          vm.prev = res.data.prevPost;
+          vm.next = res.data.nextPost;
+          vm.$nextTick(() => {
+            window.scrollTo(0, 0);
+          });
+        });
+      })
+      .catch((err) => {
+        // console.log("POST DETAIL GET ERR.RESPONSE", err.response);
+        alert(err.response.status + " " + err.response.statusText);
+        next(false);
+      });
   },
 
-  watch: {
-    $route(to, from) {
-      if (to.params.id !== from.params.id) {
-        this.fetchPostDetail(to.params.id);
-      }
-    }
+  beforeRouteUpdate(to, from, next) {
+    axios
+      .get(`/api2/post/${to.params.id}/`)
+      .then((res) => {
+        this.post = res.data.post;
+        this.markedContent = this.post.content;
+        this.prev = res.data.prevPost;
+        this.next = res.data.nextPost;
+        this.$nextTick(() => {
+          window.scrollTo(0, 0); 
+        });
+        next();
+      })
+      .catch((err) => {
+        // console.log("POST DETAIL GET ERR.RESPONSE", err.response);
+        alert(err.response.status + " " + err.response.statusText);
+        next(false);
+      });
   },
   
   computed: {
@@ -125,25 +153,6 @@ export default {
   },
 
   methods: {
-    fetchPostDetail(postId) {
-      axios
-        .get(`/api2/post/${postId}/`)
-        .then((res) => {
-          this.post = res.data.post;
-          this.markedContent = this.post.content;
-          this.prev = res.data.prevPost;
-          this.next = res.data.nextPost;
-
-          this.$nextTick(() => {
-          window.scrollTo(0, 0); // Scroll to the top of the page
-          });
-        })
-        .catch((err) => {
-          console.log("POST DETAIL GET ERR.RESPONSE", err.response);
-          alert(err.response.status + " " + err.response.statusText);
-        });
-    },
-
     serverPage(tagname) {
       this.$router.push({ name: 'Blog', query: { tagname } });
     },

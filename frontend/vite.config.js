@@ -58,10 +58,6 @@ export default defineConfig({
       ],
       input: {
         main: resolve(__dirname, 'src', 'index.html'),
-        // list: resolve(__dirname, 'src', 'pages', 'blog', 'post_list.html'),
-        // detail: resolve(__dirname, 'src', 'pages', 'blog', 'post_detail.html'),
-        // info: resolve(__dirname, 'src', 'pages', 'Info.html'),
-        // error: resolve(__dirname, 'src', 'pages', 'error.html')
       }
     }
   },

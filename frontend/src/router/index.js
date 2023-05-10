@@ -3,6 +3,10 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const routes = [
   {
     path: '/',
+    redirect: '/posts',
+  },
+  {
+    path: '/posts',
     name: 'Blog',
     component: () => import('@/components/PostList.vue')
   },

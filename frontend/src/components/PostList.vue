@@ -1,7 +1,7 @@
 <template>
   <v-container fluid style="width: 1200px">
     <v-row class="mb-6" style="height: 200px" align="center" justify="center">
-      <v-col cols="12" lg="10" align="center" class="mt-10">
+      <v-col cols="12" lg="10" align="center">
         <a class="text-h3 text-high-emphasis text-decoration-none" href="/">Post</a>
       </v-col>
       <v-col cols="12" lg="12" align="center">
@@ -137,12 +137,15 @@ export default {
     this.fetchPostList();
   },
 
-  mounted() {
+  beforeRouteUpdate(to, from, next) {
+    this.tagname = to.query.tagname;
+    this.category = to.query.category;
+    this.fetchPostList();
+    next();
   },
 
   methods: {
     async fetchPostList(page = 1) {
-
       let getUrl = "";
       if (this.tagname) getUrl = `/api2/post/?page=${page}&tagname=${this.tagname}`;
       else if (this.category) getUrl = `/api2/post/?page=${page}&category=${this.category}`;
@@ -156,7 +159,7 @@ export default {
           this.curPage = res.data.curPage;
         })
         .catch((err) => {
-          console.log("POST LIST GET ERR.RESPONSE", err.response);
+          // console.log("POST LIST GET ERR.RESPONSE", err.response);
           alert(err.response.status + " " + err.response.statusText);
         });
     },
@@ -165,8 +168,8 @@ export default {
     this.$router.push({ name: 'Detail', params: { id: item } });
     },
 
-  categoryPage(category) {
-    this.$router.push({ name: 'Blog', query: { category } });
+    categoryPage(category) {
+      this.$router.push({ name: 'Blog', query: { category } });
     },
 
     pageChange(page) {

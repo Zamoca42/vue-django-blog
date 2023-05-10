@@ -117,12 +117,6 @@ export default {
     },
   },
 
-  created() {
-  },
-
-  mounted() {
-  },
-
   methods: {
     fetchTagCloud() {
       axios
@@ -143,13 +137,14 @@ export default {
           });
         })
         .catch((err) => {
-          console.log("TAG CLOUD GET ERR.RESPONSE", err.response);
+          // console.log("TAG CLOUD GET ERR.RESPONSE", err.response);
           alert(err.response.status + " " + err.response.statusText);
         });
     },
 
     serverPage(tagname) {
       this.$router.push({ name: 'Blog', query: { tagname } });
+      this.dialog = false;
     },
   },
 };
