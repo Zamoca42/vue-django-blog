@@ -132,9 +132,8 @@ export default {
   computed: {},
 
   created() {
-    const params = new URL(location).searchParams;
-    this.tagname = params.get("tagname");
-    this.category = params.get("category");
+    this.tagname = this.$route.query.tagname;
+    this.category = this.$route.query.category;
     this.fetchPostList();
   },
 
@@ -163,11 +162,11 @@ export default {
     },
 
     serverPage(item) {
-      location.href = `/blog/post_detail.html?id=${item}`;
+    this.$router.push({ name: 'Detail', params: { id: item } });
     },
 
-    categoryPage(category) {
-      location.href = `/blog/post_list.html?category=${category}`;
+  categoryPage(category) {
+    this.$router.push({ name: 'Blog', query: { category } });
     },
 
     pageChange(page) {

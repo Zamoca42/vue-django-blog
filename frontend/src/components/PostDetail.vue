@@ -42,7 +42,7 @@
     <v-row align="center" justify="center">
       <v-col cols="6" sm="5" lg="5">
         <v-card elevation="1" class="pa-2 mb-5" height="65px"
-        v-if="prev" @click="fetchPostDetail(prev.id)" 
+        v-if="prev" @click="$router.push({ name: 'Detail', params: { id: prev.id } })" 
         tile hover>
           <p class="text-disabled"> &lt; prev </p>
           <p class="myword ml-2" v-html="prev.title"></p>
@@ -50,7 +50,7 @@
       </v-col>
       <v-col cols="6" sm="5" lg="5" class="text-right">
         <v-card elevation="1" class="pa-2 mb-5" height="65px"
-        v-if="next" @click="fetchPostDetail(next.id)"
+        v-if="next" @click="$router.push({ name: 'Detail', params: { id: next.id } })"
         tile hover>
         <p class="text-disabled"> next &gt; </p>
         <p class="myword me-2" v-html="next.title"></p>
@@ -90,9 +90,16 @@ export default {
   }),
 
   created() {
-    const params = new URL(location).searchParams;
-    const postId = params.get("id");
+    const postId = this.$route.params.id;
     this.fetchPostDetail(postId);
+  },
+
+  watch: {
+    $route(to, from) {
+      if (to.params.id !== from.params.id) {
+        this.fetchPostDetail(to.params.id);
+      }
+    }
   },
   
   computed: {
@@ -138,7 +145,7 @@ export default {
     },
 
     serverPage(tagname) {
-      location.href = `/blog/post_list.html?tagname=${tagname}`;
+      this.$router.push({ name: 'Blog', query: { tagname } });
     },
   },
 };

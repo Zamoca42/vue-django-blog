@@ -13,3 +13,7 @@ body .v-application h1 {
   body .v-application h2 {
     margin-top: 48px;
   }
+
+.v-application__wrap {
+  min-height: 10vh;
+}

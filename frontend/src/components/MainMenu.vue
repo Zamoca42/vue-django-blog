@@ -18,7 +18,7 @@
         v-for="(item, i) in items"
         :key="i"
         :value="item"
-        :to="item.href"
+        :to="$router.resolve(item.href)"
       >
         {{ item.text }}
       </v-btn>
@@ -78,7 +78,7 @@
         v-for="(item, i) in items"
         :key="i"
         :value="item"
-        :to="item.href"
+        :to="$router.resolve(item.href)"
         active-color="primary"
       >
         <template v-slot:prepend>
@@ -106,8 +106,8 @@ export default {
     dialog: false,
     tagCloud: [],
     items: [
-      { text: "Info", href: "/info" },
-      { text: "Blog", href: "/" },
+      { text: "Info", href: { name: 'Info' }},
+      { text: "Blog", href: { name: 'Blog' }},
     ],
   }),
 
@@ -149,7 +149,7 @@ export default {
     },
 
     serverPage(tagname) {
-      location.href = `/blog/post_list.html?tagname=${tagname}`;
+      this.$router.push({ name: 'Blog', query: { tagname } });
     },
   },
 };
