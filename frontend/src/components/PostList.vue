@@ -110,6 +110,7 @@
 
 <script>
 import axios from "./index.js";
+import _ from 'lodash';
 
 export default {
   setup() {},
@@ -142,12 +143,9 @@ export default {
 
   methods: {
     fetchPostList(page = 1) {
-      let getUrl = "";
-      if (this.tagname)
-        getUrl = `/api2/post/?page=${page}&tagname=${this.tagname}`;
-      else if (this.category)
-        getUrl = `/api2/post/?page=${page}&category=${this.category}`;
-      else getUrl = `/api2/post/?page=${page}`;
+      let getUrl = `/api2/post/?page=${page}`;
+      if (this.tagname) getUrl += `&tagname=${this.tagname}`;
+      if (this.category) getUrl += `&category=${this.category}`;
 
       axios
         .get(getUrl)
@@ -155,7 +153,6 @@ export default {
           this.postList = res.data.postList;
           this.pageCnt = res.data.pageCnt;
           this.curPage = res.data.curPage;
-          console.log(this.postList);
         })
         .catch((err) => {
           this.$router.push({ name: "NotFound" });
@@ -166,9 +163,9 @@ export default {
       this.$router.push({ name: "Detail", params: { id: item } });
     },
 
-    categoryPage(category) {
+    categoryPage: _.debounce(function (category) {
       this.$router.push({ name: "Blog", query: { category } });
-    },
+    }, 300),
 
     pageChange(page) {
       if (this.curPage === page) return;
