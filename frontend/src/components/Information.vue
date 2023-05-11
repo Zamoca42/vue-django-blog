@@ -1,11 +1,7 @@
 <template>
   <v-container class="fill-height" style="width:75%;">
     <v-responsive class="d-flex align-center text-center fill-height">
-      <v-img
-        contain
-        height="300"
-        src="../assets/logo.svg"
-      />
+      <v-img contain height="300" src="../assets/logo.svg" />
 
       <div class="py-14 text-body-2 font-weight-light mb-n1">Welcome to</div>
 
