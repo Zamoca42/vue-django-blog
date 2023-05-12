@@ -12,14 +12,17 @@
     "dompurify": "^3.0.1",
     "github-markdown-css": "^5.2.0",
     "highlight.js": "^11.7.0",
+    "lodash": "^4.17.21",
     "marked": "^4.2.12",
     "roboto-fontface": "*",
     "vue": "^3.2.38",
+    "vue-router": "^4.1.6",
     "vuetify": "^3.0.0",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.0.3",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "rollup-plugin-visualizer": "^5.9.0",
     "vite": "^4.1.4",
     "vite-plugin-vuetify": "^1.0.0-alpha.12"
   }

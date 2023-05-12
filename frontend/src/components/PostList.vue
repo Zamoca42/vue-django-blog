@@ -1,8 +1,10 @@
 <template>
   <v-container fluid style="width: 1200px">
     <v-row class="mb-6" style="height: 200px" align="center" justify="center">
-      <v-col cols="12" lg="10" align="center" class="mt-10">
-        <a class="text-h3 text-high-emphasis text-decoration-none" href="/">Post</a>
+      <v-col cols="12" lg="10" align="center">
+        <a class="text-h3 text-high-emphasis text-decoration-none" href="/"
+          >Post</a
+        >
       </v-col>
       <v-col cols="12" lg="12" align="center">
         <v-btn
@@ -90,17 +92,16 @@
     </v-row>
     <v-row align="center" justify="center">
       <div class="text-center">
-        <template v-if="pageCnt === 1">
-        </template>
+        <template v-if="pageCnt === 1"> </template>
         <template v-else>
           <v-pagination
-          v-model="page"
-          :length="pageCnt"
-          :total-visible="4"
-          rounded="circle"
-          @click.stop="pageChange(page)"
-        >
-        </v-pagination>
+            v-model="page"
+            :length="pageCnt"
+            :total-visible="4"
+            rounded="circle"
+            @click.stop="pageChange(page)"
+          >
+          </v-pagination>
         </template>
       </div>
     </v-row>
@@ -109,18 +110,14 @@
 
 <script>
 import axios from "./index.js";
+import _ from 'lodash';
 
 export default {
-  setup() {
-  },
+  setup() {},
 
   data: () => ({
     postList: [],
-    cateList: [
-      { text: "Log" },
-      { text: "Project" },
-      { text: "Review" },
-    ],
+    cateList: [{ text: "Log" }, { text: "Project" }, { text: "Review" }],
     tagname: "",
     category: "",
     page: 1,
@@ -132,22 +129,23 @@ export default {
   computed: {},
 
   created() {
-    const params = new URL(location).searchParams;
-    this.tagname = params.get("tagname");
-    this.category = params.get("category");
+    this.tagname = this.$route.query.tagname;
+    this.category = this.$route.query.category;
     this.fetchPostList();
   },
 
-  mounted() {
+  beforeRouteUpdate(to, from, next) {
+    this.tagname = to.query.tagname;
+    this.category = to.query.category;
+    this.fetchPostList();
+    next();
   },
 
   methods: {
-    async fetchPostList(page = 1) {
-
-      let getUrl = "";
-      if (this.tagname) getUrl = `/api2/post/?page=${page}&tagname=${this.tagname}`;
-      else if (this.category) getUrl = `/api2/post/?page=${page}&category=${this.category}`;
-      else getUrl = `/api2/post/?page=${page}`;
+    fetchPostList(page = 1) {
+      let getUrl = `/api2/post/?page=${page}`;
+      if (this.tagname) getUrl += `&tagname=${this.tagname}`;
+      if (this.category) getUrl += `&category=${this.category}`;
 
       axios
         .get(getUrl)
@@ -157,21 +155,20 @@ export default {
           this.curPage = res.data.curPage;
         })
         .catch((err) => {
-          console.log("POST LIST GET ERR.RESPONSE", err.response);
-          alert(err.response.status + " " + err.response.statusText);
+          this.$router.push({ name: "NotFound" });
         });
     },
 
     serverPage(item) {
-      location.href = `/blog/post_detail.html?id=${item}`;
+      this.$router.push({ name: "Detail", params: { id: item } });
     },
 
-    categoryPage(category) {
-      location.href = `/blog/post_list.html?category=${category}`;
-    },
+    categoryPage: _.debounce(function (category) {
+      this.$router.push({ name: "Blog", query: { category } });
+    }, 300),
 
     pageChange(page) {
-      if (this.curPage === page) return
+      if (this.curPage === page) return;
       else {
         this.curPage = page;
         this.fetchPostList(page);

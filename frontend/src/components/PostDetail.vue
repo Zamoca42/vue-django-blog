@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="width: 1100px;">
+  <v-container fluid style="width: 1100px">
     <v-row align="center" justify="center">
       <v-col cols="12" lg="10" class="mt-10 text-center">
         <p class="mywrap text-h4 font-weight-bold">{{ post.title }}</p>
@@ -17,14 +17,16 @@
         </p>
       </v-col>
     </v-row>
-    <v-row align="start" justify="center" >
+    <v-row align="start" justify="center">
       <v-col cols="12" sm="12" md="10" lg="10">
-        <v-card class="pa-2" elevation="0" >
+        <v-card class="pa-2" elevation="0">
           <div class="markdown-body" v-html="sanitizedContent"></div>
-          
-          <div class="mt-5">  
+
+          <div class="mt-5">
             <div>
-              <strong class="text-disabled">Last Modified at {{ post.modify_dt }}</strong>
+              <strong class="text-disabled"
+                >Last Modified at {{ post.modify_dt }}</strong
+              >
             </div>
             <strong class="text-disabled">TAGS:</strong>
             <v-chip
@@ -41,19 +43,31 @@
     </v-row>
     <v-row align="center" justify="center">
       <v-col cols="6" sm="5" lg="5">
-        <v-card elevation="1" class="pa-2 mb-5" height="65px"
-        v-if="prev" @click="fetchPostDetail(prev.id)" 
-        tile hover>
-          <p class="text-disabled"> &lt; prev </p>
+        <v-card
+          elevation="1"
+          class="pa-2 mb-5"
+          height="65px"
+          v-if="prev"
+          @click="$router.push({ name: 'Detail', params: { id: prev.id } })"
+          tile
+          hover
+        >
+          <p class="text-disabled">&lt; prev</p>
           <p class="myword ml-2" v-html="prev.title"></p>
         </v-card>
       </v-col>
       <v-col cols="6" sm="5" lg="5" class="text-right">
-        <v-card elevation="1" class="pa-2 mb-5" height="65px"
-        v-if="next" @click="fetchPostDetail(next.id)"
-        tile hover>
-        <p class="text-disabled"> next &gt; </p>
-        <p class="myword me-2" v-html="next.title"></p>
+        <v-card
+          elevation="1"
+          class="pa-2 mb-5"
+          height="65px"
+          v-if="next"
+          @click="$router.push({ name: 'Detail', params: { id: next.id } })"
+          tile
+          hover
+        >
+          <p class="text-disabled">next &gt;</p>
+          <p class="myword me-2" v-html="next.title"></p>
         </v-card>
       </v-col>
     </v-row>
@@ -62,26 +76,50 @@
 
 <script>
 import axios from "./index.js";
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
-import 'github-markdown-css/github-markdown-light.css'
-import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+import "github-markdown-css/github-markdown-light.css";
+import hljs from "highlight.js/lib/core";
+import javascript from "highlight.js/lib/languages/javascript";
+import python from "highlight.js/lib/languages/python";
+import plaintext from "highlight.js/lib/languages/plaintext";
+import bash from "highlight.js/lib/languages/bash";
+import json from "highlight.js/lib/languages/json";
+import "highlight.js/styles/github.css";
+
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("python", python);
+hljs.registerLanguage("plaintext", plaintext);
+hljs.registerLanguage("json", json);
+hljs.registerLanguage("bash", bash);
 
 export default {
   data: () => ({
     post: {},
     prev: {},
     next: {},
-    markedContent: '',
+    markedContent: "",
   }),
 
-  created() {
-    const params = new URL(location).searchParams;
-    const postId = params.get("id");
-    this.fetchPostDetail(postId);
+  beforeRouteEnter: async function (to, from, next) {
+    try {
+      next((vm) => {
+        vm.fetchPostData(to.params.id);
+      });
+    } catch (err) {
+      await this.handleError(err, next);
+    }
   },
-  
+
+  beforeRouteUpdate: async function (to, from, next) {
+    try {
+      await this.fetchPostData(to.params.id);
+      next();
+    } catch (err) {
+      await this.handleError(err, next);
+    }
+  },
+
   computed: {
     sanitizedContent() {
       marked.setOptions({
@@ -92,36 +130,37 @@ export default {
         pedantic: false,
         smartLists: true,
         smartypants: false,
-        highlight: function(code, lang) {
-          return lang !== '' ? hljs.highlight(code, { language: lang }).value : hljs.highlightAll(code);
-        }
+        highlight: function (code, lang) {
+          if (lang && hljs.getLanguage(lang)) {
+            return hljs.highlight(code, { language: lang }).value;
+          } else {
+            return hljs.highlight(code, { language: "plaintext" }).value;
+          }
+        },
       });
-      return DOMPurify.sanitize(marked(this.markedContent))
-    }
+      return DOMPurify.sanitize(marked(this.markedContent));
+    },
   },
 
   methods: {
-    fetchPostDetail(postId) {
-      axios
-        .get(`/api2/post/${postId}/`)
-        .then((res) => {
-          this.post = res.data.post;
-          this.markedContent = this.post.content;
-          this.prev = res.data.prevPost;
-          this.next = res.data.nextPost;
+    async fetchPostData(id) {
+      const res = await axios.get(`/api2/post/${id}/`);
+      this.post = res.data.post;
+      this.markedContent = this.post.content;
+      this.prev = res.data.prevPost;
+      this.next = res.data.nextPost;
+      this.$nextTick(() => {
+        window.scrollTo(0, 0);
+      });
+    },
 
-          this.$nextTick(() => {
-          window.scrollTo(0, 0); // Scroll to the top of the page
-          });
-        })
-        .catch((err) => {
-          console.log("POST DETAIL GET ERR.RESPONSE", err.response);
-          alert(err.response.status + " " + err.response.statusText);
-        });
+    async handleError(error, next) {
+      this.$router.push({ name: "NotFound" });
+      next(false);
     },
 
     serverPage(tagname) {
-      location.href = `/blog/post_list.html?tagname=${tagname}`;
+      this.$router.push({ name: "Blog", query: { tagname } });
     },
   },
 };
@@ -132,11 +171,13 @@ export default {
   word-break: keep-all;
   white-space: pre-wrap;
 }
+
 .myword {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
+
 .markdown-body {
   line-height: 1.7;
   color: #212529;
