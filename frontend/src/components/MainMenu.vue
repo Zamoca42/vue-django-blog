@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import axios from "./index.js";
+import axios from "../plugins/axios-serverURL.js";
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";

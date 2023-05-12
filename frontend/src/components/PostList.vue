@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import axios from "./index.js";
+import axios from "../plugins/axios-serverURL.js";
 import _ from 'lodash';
 
 export default {

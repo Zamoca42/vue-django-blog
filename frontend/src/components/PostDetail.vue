@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import axios from "./index.js";
+import axios from "../plugins/axios-serverURL.js";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import "github-markdown-css/github-markdown-light.css";
