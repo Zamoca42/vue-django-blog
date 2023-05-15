@@ -24,10 +24,10 @@ jobs:
           node-version: 18.x
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Build page
-        run: yarn build
+        run: npm run build
 
       - name: Authenticate AWS CLI
         env:
