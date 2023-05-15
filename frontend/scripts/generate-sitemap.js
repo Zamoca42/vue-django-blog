@@ -8,11 +8,11 @@ const links = [
   { url: '/info', changefreq: 'monthly', priority: 0.5 },
 ];
 
-const sitemap = new SitemapStream({ hostname: 'https://www.zamoca.space' });
+const sitemap = new SitemapStream({ hostname: 'https://www.zamoca.space', prettyPrint: true });
 
-axios.get('https:/server.zamoca.space/api2/post/')
+axios.get('https://server.zamoca.space/api2/post/')
   .then(response => {
-    const posts = response.data;
+    const posts = response.data.postList;
     posts.forEach(post => {
       links.push({ url: `/posts/${post.id}`, changefreq: 'weekly', priority: 0.7 });
     });
