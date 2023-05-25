@@ -131,11 +131,9 @@ export default {
         });
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          // 포스트가 없는 경우 404 페이지로 리다이렉트합니다.
-          this.$router.push('/not-found');
+          this.$router.push({ name: "NotFound" });
         } else {
-          // 다른 오류를 처리합니다.
-          console.error(error);
+          this.$router.push({ name: "NotFound" });
         }
       }
     },
