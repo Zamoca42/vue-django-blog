@@ -2,7 +2,7 @@ name: Generate Sitemap
 
 on:
   schedule:
-    - cron:  '0 0 * * *' # 매일 12시에 실행
+    - cron:  '0 0 7 * *' # 7일마다 세계시 기준 0시에 실행
 
 jobs:
   build:
