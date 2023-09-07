@@ -7,11 +7,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hsorby/vue3-katex": "^0.6.0-rc.5",
     "@mdi/font": "7.0.96",
     "axios": "^1.3.2",
     "dompurify": "^3.0.1",
     "github-markdown-css": "^5.2.0",
     "highlight.js": "^11.7.0",
+    "katex": "^0.16.8",
     "lodash": "^4.17.21",
     "marked": "^4.2.12",
     "roboto-fontface": "*",
