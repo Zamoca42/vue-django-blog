@@ -17,7 +17,7 @@
     <v-row align="start" justify="center">
       <v-col cols="12" sm="12" md="10" lg="10">
         <v-card class="pa-2" elevation="0">
-          <div class="markdown-body" v-html="sanitizedContent"></div>
+          <div v-katex:auto="{ options }" class="markdown-body" v-html="sanitizedContent"></div>
 
           <div class="mt-5">
             <div>
@@ -62,6 +62,8 @@ import plaintext from "highlight.js/lib/languages/plaintext";
 import bash from "highlight.js/lib/languages/bash";
 import json from "highlight.js/lib/languages/json";
 import "highlight.js/styles/github.css";
+import "katex/dist/katex.min.css";
+
 
 hljs.registerLanguage("javascript", javascript);
 hljs.registerLanguage("python", python);
@@ -75,6 +77,14 @@ export default {
     prev: {},
     next: {},
     markedContent: "",
+    options: {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false},
+        {left: "\\[", right: "\\]", display: true}
+      ]
+    }
   }),
 
   beforeRouteEnter: async function (to, from, next) {
